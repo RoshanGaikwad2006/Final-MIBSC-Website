@@ -120,16 +120,16 @@ const EventForm = ({ event, onClose, onSuccess }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-gray-900 border border-gray-700 rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-2xl font-bold text-gray-900">
+        <div className="flex items-center justify-between p-6 border-b border-gray-700">
+          <h2 className="text-2xl font-bold text-white code-font">
             {event ? 'Edit Event' : 'Add New Event'}
           </h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-gray-800 rounded-lg transition-colors text-gray-400 hover:text-white"
           >
             <X size={20} />
           </button>
@@ -141,7 +141,7 @@ const EventForm = ({ event, onClose, onSuccess }) => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Event Title */}
             <div className="lg:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2 code-font">
                 Event Title *
               </label>
               <input
@@ -150,16 +150,16 @@ const EventForm = ({ event, onClose, onSuccess }) => {
                 placeholder="Enter event title"
               />
               {errors.title && (
-                <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>
+                <p className="text-red-400 text-sm mt-1">{errors.title.message}</p>
               )}
             </div>
 
             {/* Event Type */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2 code-font">
                 Event Type *
               </label>
-              <select {...register('type')} className="input-field">
+              <select {...register('type')} className="select-field">
                 {EVENT_TYPES.map(type => (
                   <option key={type.id} value={type.id}>{type.name}</option>
                 ))}
@@ -168,10 +168,10 @@ const EventForm = ({ event, onClose, onSuccess }) => {
 
             {/* Status */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2 code-font">
                 Status
               </label>
-              <select {...register('status')} className="input-field">
+              <select {...register('status')} className="select-field">
                 <option value="upcoming">Upcoming</option>
                 <option value="ongoing">Ongoing</option>
                 <option value="completed">Completed</option>
@@ -181,8 +181,8 @@ const EventForm = ({ event, onClose, onSuccess }) => {
 
             {/* Date */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <Calendar size={16} className="inline mr-1" />
+              <label className="block text-sm font-medium text-gray-300 mb-2 code-font">
+                <Calendar size={16} className="inline mr-1 text-cyan-400" />
                 Start Date *
               </label>
               <input
@@ -191,14 +191,14 @@ const EventForm = ({ event, onClose, onSuccess }) => {
                 className="input-field"
               />
               {errors.date && (
-                <p className="text-red-500 text-sm mt-1">{errors.date.message}</p>
+                <p className="text-red-400 text-sm mt-1">{errors.date.message}</p>
               )}
             </div>
 
             {/* End Date */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <Calendar size={16} className="inline mr-1" />
+              <label className="block text-sm font-medium text-gray-300 mb-2 code-font">
+                <Calendar size={16} className="inline mr-1 text-cyan-400" />
                 End Date (Optional)
               </label>
               <input
@@ -210,8 +210,8 @@ const EventForm = ({ event, onClose, onSuccess }) => {
 
             {/* Time */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <Clock size={16} className="inline mr-1" />
+              <label className="block text-sm font-medium text-gray-300 mb-2 code-font">
+                <Clock size={16} className="inline mr-1 text-cyan-400" />
                 Time *
               </label>
               <input
@@ -220,14 +220,14 @@ const EventForm = ({ event, onClose, onSuccess }) => {
                 className="input-field"
               />
               {errors.time && (
-                <p className="text-red-500 text-sm mt-1">{errors.time.message}</p>
+                <p className="text-red-400 text-sm mt-1">{errors.time.message}</p>
               )}
             </div>
 
             {/* Venue */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <MapPin size={16} className="inline mr-1" />
+              <label className="block text-sm font-medium text-gray-300 mb-2 code-font">
+                <MapPin size={16} className="inline mr-1 text-cyan-400" />
                 Venue *
               </label>
               <input
@@ -236,14 +236,14 @@ const EventForm = ({ event, onClose, onSuccess }) => {
                 placeholder="Event venue"
               />
               {errors.venue && (
-                <p className="text-red-500 text-sm mt-1">{errors.venue.message}</p>
+                <p className="text-red-400 text-sm mt-1">{errors.venue.message}</p>
               )}
             </div>
           </div>
 
           {/* Description */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-300 mb-2 code-font">
               Description *
             </label>
             <textarea
@@ -253,13 +253,13 @@ const EventForm = ({ event, onClose, onSuccess }) => {
               placeholder="Detailed event description"
             />
             {errors.description && (
-              <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>
+              <p className="text-red-400 text-sm mt-1">{errors.description.message}</p>
             )}
           </div>
 
           {/* Short Description */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-300 mb-2 code-font">
               Short Description (Max 200 characters)
             </label>
             <textarea
@@ -271,7 +271,7 @@ const EventForm = ({ event, onClose, onSuccess }) => {
               placeholder="Brief description for cards and previews"
             />
             {errors.shortDescription && (
-              <p className="text-red-500 text-sm mt-1">{errors.shortDescription.message}</p>
+              <p className="text-red-400 text-sm mt-1">{errors.shortDescription.message}</p>
             )}
           </div>
 
@@ -279,8 +279,8 @@ const EventForm = ({ event, onClose, onSuccess }) => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Registration Link */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <Link size={16} className="inline mr-1" />
+              <label className="block text-sm font-medium text-gray-300 mb-2 code-font">
+                <Link size={16} className="inline mr-1 text-cyan-400" />
                 Registration Link (Google Form)
               </label>
               <input
@@ -294,14 +294,14 @@ const EventForm = ({ event, onClose, onSuccess }) => {
                 placeholder="https://forms.google.com/..."
               />
               {errors.registrationLink && (
-                <p className="text-red-500 text-sm mt-1">{errors.registrationLink.message}</p>
+                <p className="text-red-400 text-sm mt-1">{errors.registrationLink.message}</p>
               )}
             </div>
 
             {/* Max Participants */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <Users size={16} className="inline mr-1" />
+              <label className="block text-sm font-medium text-gray-300 mb-2 code-font">
+                <Users size={16} className="inline mr-1 text-cyan-400" />
                 Max Participants
               </label>
               <input
@@ -313,26 +313,26 @@ const EventForm = ({ event, onClose, onSuccess }) => {
                 placeholder="Leave empty for unlimited"
               />
               {errors.maxParticipants && (
-                <p className="text-red-500 text-sm mt-1">{errors.maxParticipants.message}</p>
+                <p className="text-red-400 text-sm mt-1">{errors.maxParticipants.message}</p>
               )}
             </div>
           </div>
 
           {/* Domains */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-300 mb-2 code-font">
               Related Domains
             </label>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
               {DOMAINS.map(domain => (
-                <label key={domain.id} className="flex items-center space-x-2 cursor-pointer">
+                <label key={domain.id} className="flex items-center space-x-2 cursor-pointer group">
                   <input
                     {...register('domains')}
                     type="checkbox"
                     value={domain.id}
-                    className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                    className="rounded border-gray-600 bg-gray-800 text-cyan-500 focus:ring-cyan-500 focus:ring-offset-gray-900"
                   />
-                  <span className="text-sm text-gray-700">{domain.name}</span>
+                  <span className="text-sm text-gray-300 group-hover:text-white transition-colors">{domain.name}</span>
                 </label>
               ))}
             </div>
@@ -340,7 +340,7 @@ const EventForm = ({ event, onClose, onSuccess }) => {
 
           {/* Organizers */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-300 mb-2 code-font">
               Organizers (comma-separated)
             </label>
             <input
@@ -352,7 +352,7 @@ const EventForm = ({ event, onClose, onSuccess }) => {
 
           {/* Tags */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-300 mb-2 code-font">
               Tags (comma-separated)
             </label>
             <input
@@ -364,10 +364,10 @@ const EventForm = ({ event, onClose, onSuccess }) => {
 
           {/* Image Upload */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-300 mb-2 code-font">
               Event Image
             </label>
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6">
+            <div className="border-2 border-dashed border-gray-600 rounded-lg p-6 bg-gray-800/30">
               {imagePreview ? (
                 <div className="relative">
                   <img
@@ -381,7 +381,7 @@ const EventForm = ({ event, onClose, onSuccess }) => {
                       setImagePreview('');
                       setSelectedFile(null);
                     }}
-                    className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600"
+                    className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 transition-colors"
                   >
                     <X size={16} />
                   </button>
@@ -389,7 +389,7 @@ const EventForm = ({ event, onClose, onSuccess }) => {
               ) : (
                 <div className="text-center">
                   <Upload size={48} className="mx-auto text-gray-400 mb-4" />
-                  <p className="text-gray-600 mb-2">Upload event image</p>
+                  <p className="text-gray-400 mb-2">Upload event image</p>
                   <input
                     type="file"
                     accept="image/*"
@@ -409,24 +409,24 @@ const EventForm = ({ event, onClose, onSuccess }) => {
           </div>
 
           {/* Featured Event */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-3 p-4 bg-gray-800/30 rounded-lg border border-gray-700">
             <input
               {...register('featured')}
               type="checkbox"
-              className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+              className="rounded border-gray-600 bg-gray-800 text-cyan-500 focus:ring-cyan-500 focus:ring-offset-gray-900"
             />
-            <label className="flex items-center text-sm font-medium text-gray-700">
-              <Star size={16} className="mr-1 text-yellow-500" />
+            <label className="flex items-center text-sm font-medium text-gray-300 code-font">
+              <Star size={16} className="mr-1 text-yellow-400" />
               Featured Event (Show on homepage)
             </label>
           </div>
 
           {/* Form Actions */}
-          <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
+          <div className="flex justify-end space-x-4 pt-6 border-t border-gray-700">
             <button
               type="button"
               onClick={onClose}
-              className="btn-outline"
+              className="btn-secondary"
               disabled={isLoading}
             >
               Cancel

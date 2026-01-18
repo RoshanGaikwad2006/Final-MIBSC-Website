@@ -113,13 +113,13 @@ const AchievementForm = ({ achievement, onClose, onSuccess }) => {
     };
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-                <div className="flex items-center justify-between p-6 border-b border-gray-200">
-                    <h2 className="text-2xl font-bold text-gray-900">
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div className="bg-gray-900 border border-gray-700 rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+                <div className="flex items-center justify-between p-6 border-b border-gray-700">
+                    <h2 className="text-2xl font-bold text-white code-font">
                         {achievement ? 'Edit Achievement' : 'Add New Achievement'}
                     </h2>
-                    <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                    <button onClick={onClose} className="p-2 hover:bg-gray-800 rounded-lg transition-colors text-gray-400 hover:text-white">
                         <X size={20} />
                     </button>
                 </div>
@@ -127,14 +127,14 @@ const AchievementForm = ({ achievement, onClose, onSuccess }) => {
                 <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-6">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div className="lg:col-span-2">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Title *</label>
+                            <label className="block text-sm font-medium text-gray-300 mb-2 code-font">Title *</label>
                             <input {...register('title', { required: 'Title is required' })} className="input-field" placeholder="e.g. 1st Place at Smart India Hackathon" />
-                            {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>}
+                            {errors.title && <p className="text-red-400 text-sm mt-1">{errors.title.message}</p>}
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Category *</label>
-                            <select {...register('category')} className="input-field">
+                            <label className="block text-sm font-medium text-gray-300 mb-2 code-font">Category *</label>
+                            <select {...register('category')} className="select-field">
                                 {ACHIEVEMENT_CATEGORIES.map(cat => (
                                     <option key={cat.id} value={cat.id}>{cat.name}</option>
                                 ))}
@@ -142,8 +142,8 @@ const AchievementForm = ({ achievement, onClose, onSuccess }) => {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Position / Rank</label>
-                            <select {...register('position')} className="input-field">
+                            <label className="block text-sm font-medium text-gray-300 mb-2 code-font">Position / Rank</label>
+                            <select {...register('position')} className="select-field">
                                 <option value="">Select Position</option>
                                 <option value="1st">1st Place / Winner</option>
                                 <option value="2nd">2nd Place / Runner-up</option>
@@ -155,91 +155,92 @@ const AchievementForm = ({ achievement, onClose, onSuccess }) => {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                <Calendar size={16} className="inline mr-1" /> Date *
+                            <label className="block text-sm font-medium text-gray-300 mb-2 code-font">
+                                <Calendar size={16} className="inline mr-1 text-cyan-400" /> Date *
                             </label>
                             <input {...register('date', { required: 'Date is required' })} type="date" className="input-field" />
-                            {errors.date && <p className="text-red-500 text-sm mt-1">{errors.date.message}</p>}
+                            {errors.date && <p className="text-red-400 text-sm mt-1">{errors.date.message}</p>}
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Year *</label>
+                            <label className="block text-sm font-medium text-gray-300 mb-2 code-font">Year *</label>
                             <input {...register('year', { required: 'Year is required' })} type="number" className="input-field" />
                         </div>
                     </div>
 
                     <div>
-                        <h3 className="text-sm font-semibold text-gray-900 mb-3 uppercase tracking-wider">Event Details</h3>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-gray-50 rounded-lg">
+                        <h3 className="text-sm font-semibold text-cyan-400 mb-3 uppercase tracking-wider code-font">Event Details</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-gray-800/30 rounded-lg border border-gray-700">
                             <div>
-                                <label className="block text-xs font-medium text-gray-500 mb-1">Event Name</label>
+                                <label className="block text-xs font-medium text-gray-400 mb-1 code-font">Event Name</label>
                                 <input {...register('eventName')} className="input-field text-sm" placeholder="e.g. SIH 2024" />
                             </div>
                             <div>
-                                <label className="block text-xs font-medium text-gray-500 mb-1">Organizer</label>
+                                <label className="block text-xs font-medium text-gray-400 mb-1 code-font">Organizer</label>
                                 <input {...register('eventOrganizer')} className="input-field text-sm" placeholder="e.g. Govt of India" />
                             </div>
                             <div>
-                                <label className="block text-xs font-medium text-gray-500 mb-1">Location</label>
+                                <label className="block text-xs font-medium text-gray-400 mb-1 code-font">Location</label>
                                 <input {...register('eventLocation')} className="input-field text-sm" placeholder="e.g. New Delhi" />
                             </div>
                         </div>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Description *</label>
+                        <label className="block text-sm font-medium text-gray-300 mb-2 code-font">Description *</label>
                         <textarea {...register('description', { required: 'Description is required' })} rows={4} className="input-field" placeholder="Describe the achievement" />
+                        {errors.description && <p className="text-red-400 text-sm mt-1">{errors.description.message}</p>}
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Team Members (comma-separated)</label>
+                            <label className="block text-sm font-medium text-gray-300 mb-2 code-font">Team Members (comma-separated)</label>
                             <input {...register('teamMembers')} className="input-field" placeholder="Name 1, Name 2..." />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Tags (comma-separated)</label>
-                            <input {...register('tags')} className="input-field" />
+                            <label className="block text-sm font-medium text-gray-300 mb-2 code-font">Tags (comma-separated)</label>
+                            <input {...register('tags')} className="input-field" placeholder="AI, Competition, Winner" />
                         </div>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Domains</label>
+                        <label className="block text-sm font-medium text-gray-300 mb-2 code-font">Domains</label>
                         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
                             {DOMAINS.map(domain => (
-                                <label key={domain.id} className="flex items-center space-x-2 cursor-pointer">
-                                    <input {...register('domains')} type="checkbox" value={domain.id} className="rounded border-gray-300 text-primary-600 focus:ring-primary-500" />
-                                    <span className="text-sm text-gray-700">{domain.name}</span>
+                                <label key={domain.id} className="flex items-center space-x-2 cursor-pointer group">
+                                    <input {...register('domains')} type="checkbox" value={domain.id} className="rounded border-gray-600 bg-gray-800 text-cyan-500 focus:ring-cyan-500 focus:ring-offset-gray-900" />
+                                    <span className="text-sm text-gray-300 group-hover:text-white transition-colors">{domain.name}</span>
                                 </label>
                             ))}
                         </div>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Achievement Image</label>
-                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-6">
+                        <label className="block text-sm font-medium text-gray-300 mb-2 code-font">Achievement Image</label>
+                        <div className="border-2 border-dashed border-gray-600 rounded-lg p-6 bg-gray-800/30">
                             {imagePreview ? (
                                 <div className="relative">
                                     <img src={imagePreview} alt="Preview" className="w-full h-48 object-cover rounded-lg" />
-                                    <button type="button" onClick={() => { setImagePreview(''); setSelectedFile(null); }} className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full"><X size={16} /></button>
+                                    <button type="button" onClick={() => { setImagePreview(''); setSelectedFile(null); }} className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 transition-colors"><X size={16} /></button>
                                 </div>
                             ) : (
                                 <div className="text-center">
                                     <Upload size={48} className="mx-auto text-gray-400 mb-4" />
-                                    <p className="text-gray-600 mb-2">Upload image</p>
-                                    <input type="file" accepts="image/*" onChange={handleImageChange} className="hidden" id="ach-img-upload" />
+                                    <p className="text-gray-400 mb-2">Upload achievement image</p>
+                                    <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" id="ach-img-upload" />
                                     <label htmlFor="ach-img-upload" className="btn-outline cursor-pointer">Choose File</label>
                                 </div>
                             )}
                         </div>
                     </div>
 
-                    <div className="flex items-center space-x-3">
-                        <input {...register('featured')} type="checkbox" className="rounded border-gray-300 text-primary-600 focus:ring-primary-500" />
-                        <label className="flex items-center text-sm font-medium text-gray-700"><Star size={16} className="mr-1 text-yellow-500" /> Highlight (Featured)</label>
+                    <div className="flex items-center space-x-3 p-4 bg-gray-800/30 rounded-lg border border-gray-700">
+                        <input {...register('featured')} type="checkbox" className="rounded border-gray-600 bg-gray-800 text-cyan-500 focus:ring-cyan-500 focus:ring-offset-gray-900" />
+                        <label className="flex items-center text-sm font-medium text-gray-300 code-font"><Star size={16} className="mr-1 text-yellow-400" /> Featured Achievement (Show on homepage)</label>
                     </div>
 
-                    <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
-                        <button type="button" onClick={onClose} className="btn-outline" disabled={isLoading}>Cancel</button>
+                    <div className="flex justify-end space-x-4 pt-6 border-t border-gray-700">
+                        <button type="button" onClick={onClose} className="btn-secondary" disabled={isLoading}>Cancel</button>
                         <button type="submit" className="btn-primary" disabled={isLoading}>
                             {isLoading ? (<><LoadingSpinner size="sm" className="mr-2" /> {achievement ? 'Updating...' : 'Creating...'}</>) : (achievement ? 'Update Achievement' : 'Create Achievement')}
                         </button>

@@ -45,8 +45,19 @@ const achievementSchema = new mongoose.Schema({
     caption: String
   }],
   links: [{
-    type: String,
-    url: String
+    type: {
+      type: String,
+      enum: ['Paper', 'Demo', 'GitHub', 'Website', 'Certificate', 'Other']
+    },
+    url: {
+      type: String,
+      validate: {
+        validator: function(v) {
+          return /^https?:\/\/.+/.test(v);
+        },
+        message: 'Please provide a valid URL'
+      }
+    }
   }],
   featured: {
     type: Boolean,

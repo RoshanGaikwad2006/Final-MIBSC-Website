@@ -109,13 +109,13 @@ const ProjectForm = ({ project, onClose, onSuccess }) => {
     };
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-                <div className="flex items-center justify-between p-6 border-b border-gray-200">
-                    <h2 className="text-2xl font-bold text-gray-900">
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div className="bg-gray-900 border border-gray-700 rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+                <div className="flex items-center justify-between p-6 border-b border-gray-700">
+                    <h2 className="text-2xl font-bold text-white code-font">
                         {project ? 'Edit Project' : 'Add New Project'}
                     </h2>
-                    <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                    <button onClick={onClose} className="p-2 hover:bg-gray-800 rounded-lg transition-colors text-gray-400 hover:text-white">
                         <X size={20} />
                     </button>
                 </div>
@@ -123,14 +123,14 @@ const ProjectForm = ({ project, onClose, onSuccess }) => {
                 <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-6">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div className="lg:col-span-2">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Project Title *</label>
+                            <label className="block text-sm font-medium text-gray-300 mb-2 code-font">Project Title *</label>
                             <input {...register('title', { required: 'Title is required' })} className="input-field" placeholder="Enter project title" />
-                            {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>}
+                            {errors.title && <p className="text-red-400 text-sm mt-1">{errors.title.message}</p>}
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
-                            <select {...register('status')} className="input-field">
+                            <label className="block text-sm font-medium text-gray-300 mb-2 code-font">Status</label>
+                            <select {...register('status')} className="select-field">
                                 <option value="planning">Planning</option>
                                 <option value="ongoing">Ongoing</option>
                                 <option value="completed">Completed</option>
@@ -139,8 +139,8 @@ const ProjectForm = ({ project, onClose, onSuccess }) => {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Difficulty</label>
-                            <select {...register('difficulty')} className="input-field">
+                            <label className="block text-sm font-medium text-gray-300 mb-2 code-font">Difficulty</label>
+                            <select {...register('difficulty')} className="select-field">
                                 <option value="Beginner">Beginner</option>
                                 <option value="Intermediate">Intermediate</option>
                                 <option value="Advanced">Advanced</option>
@@ -148,50 +148,50 @@ const ProjectForm = ({ project, onClose, onSuccess }) => {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                <Calendar size={16} className="inline mr-1" /> Start Date *
+                            <label className="block text-sm font-medium text-gray-300 mb-2 code-font">
+                                <Calendar size={16} className="inline mr-1 text-cyan-400" /> Start Date *
                             </label>
                             <input {...register('startDate', { required: 'Start date is required' })} type="date" className="input-field" />
-                            {errors.startDate && <p className="text-red-500 text-sm mt-1">{errors.startDate.message}</p>}
+                            {errors.startDate && <p className="text-red-400 text-sm mt-1">{errors.startDate.message}</p>}
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                <Calendar size={16} className="inline mr-1" /> End Date (Optional)
+                            <label className="block text-sm font-medium text-gray-300 mb-2 code-font">
+                                <Calendar size={16} className="inline mr-1 text-cyan-400" /> End Date (Optional)
                             </label>
                             <input {...register('endDate')} type="date" className="input-field" />
                         </div>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Description *</label>
+                        <label className="block text-sm font-medium text-gray-300 mb-2 code-font">Description *</label>
                         <textarea {...register('description', { required: 'Description is required' })} rows={4} className="input-field" placeholder="Full project description" />
-                        {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
+                        {errors.description && <p className="text-red-400 text-sm mt-1">{errors.description.message}</p>}
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Short Description</label>
+                        <label className="block text-sm font-medium text-gray-300 mb-2 code-font">Short Description</label>
                         <textarea {...register('shortDescription', { maxLength: 200 })} rows={2} className="input-field" placeholder="Brief summary (max 200 chars)" />
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Tech Stack (comma-separated)</label>
+                            <label className="block text-sm font-medium text-gray-300 mb-2 code-font">Tech Stack (comma-separated)</label>
                             <input {...register('techStack')} className="input-field" placeholder="React, Node.js, MongoDB" />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Tags (comma-separated)</label>
+                            <label className="block text-sm font-medium text-gray-300 mb-2 code-font">Tags (comma-separated)</label>
                             <input {...register('tags')} className="input-field" placeholder="AI, Web, Mobile" />
                         </div>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Domains</label>
+                        <label className="block text-sm font-medium text-gray-300 mb-2 code-font">Domains</label>
                         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
                             {DOMAINS.map(domain => (
-                                <label key={domain.id} className="flex items-center space-x-2 cursor-pointer">
-                                    <input {...register('domains')} type="checkbox" value={domain.id} className="rounded border-gray-300 text-primary-600 focus:ring-primary-500" />
-                                    <span className="text-sm text-gray-700">{domain.name}</span>
+                                <label key={domain.id} className="flex items-center space-x-2 cursor-pointer group">
+                                    <input {...register('domains')} type="checkbox" value={domain.id} className="rounded border-gray-600 bg-gray-800 text-cyan-500 focus:ring-cyan-500 focus:ring-offset-gray-900" />
+                                    <span className="text-sm text-gray-300 group-hover:text-white transition-colors">{domain.name}</span>
                                 </label>
                             ))}
                         </div>
@@ -199,45 +199,45 @@ const ProjectForm = ({ project, onClose, onSuccess }) => {
 
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2"><Github size={16} className="inline mr-1" /> GitHub Link</label>
+                            <label className="block text-sm font-medium text-gray-300 mb-2 code-font"><Github size={16} className="inline mr-1 text-cyan-400" /> GitHub Link</label>
                             <input {...register('githubLink')} className="input-field" placeholder="https://github.com/..." />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2"><Globe size={16} className="inline mr-1" /> Demo Link</label>
+                            <label className="block text-sm font-medium text-gray-300 mb-2 code-font"><Globe size={16} className="inline mr-1 text-cyan-400" /> Demo Link</label>
                             <input {...register('demoLink')} className="input-field" placeholder="https://..." />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2"><FileText size={16} className="inline mr-1" /> Docs Link</label>
+                            <label className="block text-sm font-medium text-gray-300 mb-2 code-font"><FileText size={16} className="inline mr-1 text-cyan-400" /> Docs Link</label>
                             <input {...register('docLink')} className="input-field" placeholder="https://..." />
                         </div>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Project Image</label>
-                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-6">
+                        <label className="block text-sm font-medium text-gray-300 mb-2 code-font">Project Image</label>
+                        <div className="border-2 border-dashed border-gray-600 rounded-lg p-6 bg-gray-800/30">
                             {imagePreview ? (
                                 <div className="relative">
                                     <img src={imagePreview} alt="Preview" className="w-full h-48 object-cover rounded-lg" />
-                                    <button type="button" onClick={() => { setImagePreview(''); setSelectedFile(null); }} className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full"><X size={16} /></button>
+                                    <button type="button" onClick={() => { setImagePreview(''); setSelectedFile(null); }} className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600 transition-colors"><X size={16} /></button>
                                 </div>
                             ) : (
                                 <div className="text-center">
                                     <Upload size={48} className="mx-auto text-gray-400 mb-4" />
-                                    <p className="text-gray-600 mb-2">Upload project image</p>
-                                    <input type="file" accepts="image/*" onChange={handleImageChange} className="hidden" id="proj-img-upload" />
+                                    <p className="text-gray-400 mb-2">Upload project image</p>
+                                    <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" id="proj-img-upload" />
                                     <label htmlFor="proj-img-upload" className="btn-outline cursor-pointer">Choose File</label>
                                 </div>
                             )}
                         </div>
                     </div>
 
-                    <div className="flex items-center space-x-3">
-                        <input {...register('featured')} type="checkbox" className="rounded border-gray-300 text-primary-600 focus:ring-primary-500" />
-                        <label className="flex items-center text-sm font-medium text-gray-700"><Star size={16} className="mr-1 text-yellow-500" /> Key Project (Featured)</label>
+                    <div className="flex items-center space-x-3 p-4 bg-gray-800/30 rounded-lg border border-gray-700">
+                        <input {...register('featured')} type="checkbox" className="rounded border-gray-600 bg-gray-800 text-cyan-500 focus:ring-cyan-500 focus:ring-offset-gray-900" />
+                        <label className="flex items-center text-sm font-medium text-gray-300 code-font"><Star size={16} className="mr-1 text-yellow-400" /> Featured Project (Show on homepage)</label>
                     </div>
 
-                    <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
-                        <button type="button" onClick={onClose} className="btn-outline" disabled={isLoading}>Cancel</button>
+                    <div className="flex justify-end space-x-4 pt-6 border-t border-gray-700">
+                        <button type="button" onClick={onClose} className="btn-secondary" disabled={isLoading}>Cancel</button>
                         <button type="submit" className="btn-primary" disabled={isLoading}>
                             {isLoading ? (<><LoadingSpinner size="sm" className="mr-2" /> {project ? 'Updating...' : 'Creating...'}</>) : (project ? 'Update Project' : 'Create Project')}
                         </button>

@@ -61,7 +61,7 @@ app.use('*', (req, res) => {
 });
 
 // Database connection
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/mibcs')
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/mibcs')
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('MongoDB connection error:', err));
 

@@ -192,7 +192,7 @@ const AdminLayout = () => {
       {/* Main content */}
       <div className="lg:ml-64 relative z-10">
         {/* Top bar */}
-        <header className="sticky top-0 z-30 glass-effect border-b border-gray-700/50 px-6 py-4 backdrop-blur-xl">
+        <header className=" top-0 z-30 glass-effect border-b border-gray-700/50 px-6 py-4 backdrop-blur-xl">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <button
