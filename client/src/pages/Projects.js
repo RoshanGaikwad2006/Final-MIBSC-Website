@@ -23,61 +23,8 @@ const Projects = () => {
     }
   );
 
-  // Mock projects for demo
-  const mockProjects = [
-    {
-      _id: '1',
-      title: 'AI-Powered Code Review Assistant',
-      description: 'An intelligent system that automatically reviews code for bugs, security vulnerabilities, and best practices using machine learning.',
-      shortDescription: 'ML-based code analysis tool for automated reviews and suggestions.',
-      status: 'ongoing',
-      domains: ['Machine Learning', 'Software Engineering'],
-      techStack: ['Python', 'TensorFlow', 'FastAPI', 'React', 'Docker'],
-      githubUrl: 'https://github.com/mibcs/code-review-ai',
-      demoUrl: 'https://demo.mibcs.com/code-review',
-      teamSize: 4,
-      startDate: '2024-01-15'
-    },
-    {
-      _id: '2',
-      title: 'Smart Campus IoT Network',
-      description: 'A comprehensive IoT solution for campus management including smart lighting, air quality monitoring, and energy optimization.',
-      shortDescription: 'IoT network for intelligent campus resource management.',
-      status: 'completed',
-      domains: ['Internet of Things', 'Sustainability'],
-      techStack: ['Arduino', 'Raspberry Pi', 'Node.js', 'MongoDB', 'MQTT'],
-      githubUrl: 'https://github.com/mibcs/smart-campus',
-      teamSize: 6,
-      startDate: '2023-08-20'
-    },
-    {
-      _id: '3',
-      title: 'Decentralized Identity Verification',
-      description: 'Blockchain-based identity verification system that gives users control over their personal data while ensuring security.',
-      shortDescription: 'Blockchain solution for secure, user-controlled identity management.',
-      status: 'ongoing',
-      domains: ['Blockchain', 'Cyber Security'],
-      techStack: ['Solidity', 'Web3.js', 'IPFS', 'React', 'MetaMask'],
-      githubUrl: 'https://github.com/mibcs/decentral-id',
-      demoUrl: 'https://demo.mibcs.com/decentral-id',
-      teamSize: 5,
-      startDate: '2024-02-10'
-    },
-    {
-      _id: '4',
-      title: 'Cybersecurity Training Platform',
-      description: 'Interactive platform for learning cybersecurity concepts through hands-on labs and real-world scenarios.',
-      shortDescription: 'Gamified cybersecurity education with practical exercises.',
-      status: 'planning',
-      domains: ['Cyber Security', 'Education'],
-      techStack: ['Django', 'PostgreSQL', 'Docker', 'Vue.js', 'WebRTC'],
-      teamSize: 3,
-      startDate: '2024-03-01'
-    }
-  ];
+  const projects = data?.projects || [];
 
-  const projects = data?.projects || mockProjects;
-  
   const filteredProjects = projects.filter(project =>
     project.title.toLowerCase().includes(filters.search.toLowerCase()) ||
     project.description.toLowerCase().includes(filters.search.toLowerCase())
@@ -123,7 +70,7 @@ const Projects = () => {
               Our <span className="text-gradient">Projects</span>
             </h1>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-              Discover the innovative projects our members are building across Machine Learning, 
+              Discover the innovative projects our members are building across Machine Learning,
               IoT, Blockchain, and Cybersecurity domains.
             </p>
           </motion.div>
@@ -169,7 +116,7 @@ const Projects = () => {
                 <option value="Cyber Security">Cyber Security</option>
               </select>
               <div className="relative">
-                <button 
+                <button
                   onClick={() => setShowMoreFilters(!showMoreFilters)}
                   className="btn-outline flex items-center space-x-2"
                 >
@@ -182,7 +129,7 @@ const Projects = () => {
                     <ChevronDown size={16} />
                   </motion.div>
                 </button>
-                
+
                 {showMoreFilters && (
                   <motion.div
                     initial={{ opacity: 0, y: -10, scale: 0.95 }}
@@ -210,7 +157,7 @@ const Projects = () => {
                           <option value="2022">2022</option>
                         </select>
                       </div>
-                      <button 
+                      <button
                         onClick={() => setShowMoreFilters(false)}
                         className="w-full btn-primary text-sm py-2"
                       >
@@ -244,6 +191,18 @@ const Projects = () => {
                   className="card-glow group hover:scale-105 transition-all duration-300"
                 >
                   <div className="space-y-6">
+                    {/* Image */}
+                    {project.images && project.images.length > 0 && (
+                      <div className="relative h-48 rounded-lg overflow-hidden">
+                        <img
+                          src={project.images[0].url}
+                          alt={project.title}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent"></div>
+                      </div>
+                    )}
+
                     {/* Header */}
                     <div className="flex items-start justify-between">
                       <h3 className="text-xl font-semibold text-white group-hover:text-cyan-400 transition-colors duration-300">
@@ -253,7 +212,7 @@ const Projects = () => {
                         {project.status}
                       </span>
                     </div>
-                    
+
                     {/* Description */}
                     <p className="text-gray-400 leading-relaxed">
                       {project.shortDescription || project.description}
@@ -382,7 +341,7 @@ const Projects = () => {
                   Have a <span className="text-gradient">Project Idea</span>?
                 </h2>
                 <p className="text-gray-400 text-lg mb-8 leading-relaxed">
-                  Join MIBCS and turn your innovative ideas into reality. Collaborate with like-minded 
+                  Join MIBCS and turn your innovative ideas into reality. Collaborate with like-minded
                   developers and build the next generation of tech solutions.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">

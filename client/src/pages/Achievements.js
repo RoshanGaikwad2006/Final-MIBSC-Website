@@ -24,47 +24,7 @@ const Achievements = () => {
     }
   );
 
-  // Mock achievements for demo
-  const mockAchievements = [
-    {
-      _id: '1',
-      title: 'First Place - National AI Hackathon 2024',
-      description: 'Our team developed an innovative AI-powered healthcare solution that won first place at the National AI Hackathon.',
-      category: 'hackathon',
-      year: '2024',
-      domain: 'Machine Learning',
-      date: '2024-01-15',
-      team: ['Sarah Johnson', 'Mike Chen', 'Alex Rodriguez'],
-      prize: '$10,000',
-      image: { url: '/api/placeholder/400/300' }
-    },
-    {
-      _id: '2',
-      title: 'Best Blockchain Project - TechFest 2023',
-      description: 'Created a decentralized voting system that ensures transparency and security in electoral processes.',
-      category: 'competition',
-      year: '2023',
-      domain: 'Blockchain',
-      date: '2023-11-20',
-      team: ['Emma Wilson', 'David Park', 'Lisa Zhang'],
-      prize: 'Gold Medal',
-      image: { url: '/api/placeholder/400/300' }
-    },
-    {
-      _id: '3',
-      title: 'Cybersecurity Research Publication',
-      description: 'Published research paper on "Advanced Threat Detection in IoT Networks" in IEEE Security Journal.',
-      category: 'research',
-      year: '2024',
-      domain: 'Cyber Security',
-      date: '2024-02-10',
-      team: ['Prof. Anderson', 'Jennifer Lee', 'Tom Brown'],
-      prize: 'Publication',
-      image: { url: '/api/placeholder/400/300' }
-    }
-  ];
-
-  const achievements = data?.achievements || mockAchievements;
+  const achievements = data?.achievements || [];
 
   const filteredAchievements = achievements.filter(achievement =>
     achievement.title.toLowerCase().includes(filters.search.toLowerCase()) ||
@@ -91,7 +51,7 @@ const Achievements = () => {
               Our <span className="text-gradient">Achievements</span>
             </h1>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-              Celebrating our members' outstanding accomplishments in competitions, hackathons, 
+              Celebrating our members' outstanding accomplishments in competitions, hackathons,
               research initiatives, and innovation challenges.
             </p>
           </motion.div>
@@ -173,10 +133,10 @@ const Achievements = () => {
                   viewport={{ once: true }}
                   className="card-glow group hover:scale-105 transition-all duration-300"
                 >
-                  {achievement.image?.url && (
+                  {achievement.images && achievement.images.length > 0 && (
                     <div className="relative h-48 mb-4 rounded-lg overflow-hidden">
                       <img
-                        src={achievement.image.url}
+                        src={achievement.images[0].url}
                         alt={achievement.title}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                       />
@@ -187,12 +147,11 @@ const Achievements = () => {
                   <div className="space-y-4">
                     {/* Category Badge */}
                     <div className="flex items-center justify-between">
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium border ${
-                        achievement.category === 'hackathon' ? 'bg-purple-500/20 text-purple-400 border-purple-500/30' :
+                      <span className={`px-3 py-1 rounded-full text-xs font-medium border ${achievement.category === 'hackathon' ? 'bg-purple-500/20 text-purple-400 border-purple-500/30' :
                         achievement.category === 'competition' ? 'bg-blue-500/20 text-blue-400 border-blue-500/30' :
-                        achievement.category === 'research' ? 'bg-green-500/20 text-green-400 border-green-500/30' :
-                        'bg-yellow-500/20 text-yellow-400 border-yellow-500/30'
-                      }`}>
+                          achievement.category === 'research' ? 'bg-green-500/20 text-green-400 border-green-500/30' :
+                            'bg-yellow-500/20 text-yellow-400 border-yellow-500/30'
+                        }`}>
                         {achievement.category}
                       </span>
                       <span className="text-xs text-gray-500 code-font">
@@ -287,7 +246,7 @@ const Achievements = () => {
                   Ready to Make Your <span className="text-gradient">Mark</span>?
                 </h2>
                 <p className="text-gray-400 text-lg mb-8 leading-relaxed">
-                  Join MIBCS and be part of our next achievement story. Whether it's competitions, 
+                  Join MIBCS and be part of our next achievement story. Whether it's competitions,
                   research, or innovation challenges, we'll support your journey to excellence.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">

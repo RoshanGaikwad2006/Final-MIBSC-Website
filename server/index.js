@@ -57,15 +57,13 @@ app.use((err, req, res, next) => {
 
 // 404 handler
 app.use('*', (req, res) => {
-  res.status(404).json({ message: 'Route not found' });
+  res.status(404).json({ message: 'Route not found on server' });
 });
 
-// Database connection (commented out for mock testing)
-// mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/mibcs')
-//   .then(() => console.log('Connected to MongoDB'))
-//   .catch(err => console.error('MongoDB connection error:', err));
-
-console.log('Running in mock mode - MongoDB connection disabled');
+// Database connection
+mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/mibcs')
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

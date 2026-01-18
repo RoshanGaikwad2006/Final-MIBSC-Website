@@ -42,8 +42,9 @@ const eventSchema = new mongoose.Schema({
   registrationLink: {
     type: String,
     validate: {
-      validator: function(v) {
-        return /^https?:\/\/.+/.test(v);
+      validator: function (v) {
+        // Allow empty string or valid URL
+        return v === '' || v == null || /^https?:\/\/.+/.test(v);
       },
       message: 'Registration link must be a valid URL'
     }

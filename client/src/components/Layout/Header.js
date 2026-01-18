@@ -11,6 +11,7 @@ const Header = () => {
     { name: 'About', href: '/about' },
     { name: 'Domains', href: '/domains' },
     { name: 'Projects', href: '/projects' },
+    { name: 'Achievements', href: '/achievements' },
     { name: 'Events', href: '/events' },
     { name: 'Contact', href: '/contact' }
   ];
@@ -37,16 +38,14 @@ const Header = () => {
               <Link
                 key={item.name}
                 to={item.href}
-                className={`text-sm font-medium transition-all duration-300 relative group ${
-                  isActive(item.href)
+                className={`text-sm font-medium transition-all duration-300 relative group ${isActive(item.href)
                     ? 'text-cyan-400'
                     : 'text-gray-300 hover:text-cyan-400'
-                }`}
+                  }`}
               >
                 {item.name}
-                <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 transition-all duration-300 group-hover:w-full ${
-                  isActive(item.href) ? 'w-full' : ''
-                }`}></span>
+                <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 transition-all duration-300 group-hover:w-full ${isActive(item.href) ? 'w-full' : ''
+                  }`}></span>
               </Link>
             ))}
           </nav>
@@ -77,11 +76,10 @@ const Header = () => {
                   key={item.name}
                   to={item.href}
                   onClick={() => setIsMenuOpen(false)}
-                  className={`text-sm font-medium transition-colors duration-200 py-2 px-4 rounded-lg ${
-                    isActive(item.href)
+                  className={`text-sm font-medium transition-colors duration-200 py-2 px-4 rounded-lg ${isActive(item.href)
                       ? 'text-cyan-400 bg-gray-800/50'
                       : 'text-gray-300 hover:text-cyan-400 hover:bg-gray-800/30'
-                  }`}
+                    }`}
                 >
                   {item.name}
                 </Link>

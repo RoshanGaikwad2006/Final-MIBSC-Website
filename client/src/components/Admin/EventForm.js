@@ -9,7 +9,8 @@ import LoadingSpinner from '../UI/LoadingSpinner';
 const EventForm = ({ event, onClose, onSuccess }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState(event?.images?.[0]?.url || '');
-  
+  const [selectedFile, setSelectedFile] = useState(null);
+
   const {
     register,
     handleSubmit,
@@ -41,31 +42,53 @@ const EventForm = ({ event, onClose, onSuccess }) => {
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      // Process form data
-      const formData = {
-        ...data,
-        domains: Array.isArray(data.domains) ? data.domains : [data.domains].filter(Boolean),
-        organizers: data.organizers.split(',').map(org => org.trim()).filter(Boolean),
-        tags: data.tags.split(',').map(tag => tag.trim()).filter(Boolean),
-        maxParticipants: data.maxParticipants ? parseInt(data.maxParticipants) : undefined
-      };
+      const formData = new FormData();
 
-      // Add image if provided
-      if (imagePreview && !imagePreview.startsWith('http')) {
-        formData.images = [{
-          url: imagePreview,
-          caption: data.title
-        }];
+      // Append basic fields
+      formData.append('title', data.title);
+      formData.append('description', data.description);
+      formData.append('shortDescription', data.shortDescription);
+      formData.append('date', data.date);
+      if (data.endDate) formData.append('endDate', data.endDate);
+      formData.append('time', data.time);
+      formData.append('venue', data.venue);
+      formData.append('type', data.type);
+      formData.append('status', data.status);
+      if (data.registrationLink) formData.append('registrationLink', data.registrationLink);
+      if (data.maxParticipants) formData.append('maxParticipants', data.maxParticipants);
+      formData.append('featured', data.featured);
+
+      // Handle Arrays (send as comma-separated or repeating fields)
+      // Sending as comma-separated strings since backend handles splitting
+      formData.append('organizers', data.organizers);
+      formData.append('tags', data.tags);
+
+      // Domains (checkboxes return array)
+      if (Array.isArray(data.domains)) {
+        data.domains.forEach(domain => {
+          if (domain) formData.append('domains', domain);
+        });
+      }
+
+      // Append File
+      if (selectedFile) {
+        formData.append('image', selectedFile);
       }
 
       let response;
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      };
+
       if (event) {
         // Update existing event
-        response = await api.put(`/events/${event._id}`, formData);
+        response = await api.put(`/events/${event._id}`, formData, config);
         toast.success('Event updated successfully!');
       } else {
         // Create new event
-        response = await api.post('/events', formData);
+        response = await api.post('/events', formData, config);
         toast.success('Event created successfully!');
       }
 
@@ -86,7 +109,8 @@ const EventForm = ({ event, onClose, onSuccess }) => {
         toast.error('Image size should be less than 5MB');
         return;
       }
-      
+
+      setSelectedFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result);
@@ -239,7 +263,7 @@ const EventForm = ({ event, onClose, onSuccess }) => {
               Short Description (Max 200 characters)
             </label>
             <textarea
-              {...register('shortDescription', { 
+              {...register('shortDescription', {
                 maxLength: { value: 200, message: 'Short description must be less than 200 characters' }
               })}
               rows={2}
@@ -353,7 +377,10 @@ const EventForm = ({ event, onClose, onSuccess }) => {
                   />
                   <button
                     type="button"
-                    onClick={() => setImagePreview('')}
+                    onClick={() => {
+                      setImagePreview('');
+                      setSelectedFile(null);
+                    }}
                     className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600"
                   >
                     <X size={16} />
