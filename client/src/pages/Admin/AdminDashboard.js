@@ -1,5 +1,6 @@
 import React from 'react';
 import { useQuery } from 'react-query';
+import { Link } from 'react-router-dom';
 import { 
   Calendar, 
   Trophy, 
@@ -13,9 +14,10 @@ import {
   Activity,
   Server,
   Database,
-  Cpu,
   Shield,
-  Terminal
+  Terminal,
+  Plus,
+  ArrowRight
 } from 'lucide-react';
 import { api } from '../../utils/api';
 import LoadingSpinner from '../../components/UI/LoadingSpinner';
@@ -125,8 +127,43 @@ const AdminDashboard = () => {
   const systemStats = [
     { label: 'Server Status', value: 'Online', status: 'success', icon: Server },
     { label: 'Database', value: 'Connected', status: 'success', icon: Database },
-    { label: 'API Response', value: '45ms', status: 'success', icon: Zap },
+    { label: 'API Response', value: '< 100ms', status: 'success', icon: Zap },
     { label: 'Security', value: 'Secured', status: 'success', icon: Shield }
+  ];
+
+  const quickActions = [
+    {
+      title: 'Create Event',
+      description: 'Add a new event or workshop',
+      icon: Calendar,
+      color: 'from-blue-500 to-cyan-500',
+      link: '/admin/events',
+      action: 'create'
+    },
+    {
+      title: 'Add Achievement',
+      description: 'Record a new accomplishment',
+      icon: Trophy,
+      color: 'from-yellow-500 to-orange-500',
+      link: '/admin/achievements',
+      action: 'create'
+    },
+    {
+      title: 'New Project',
+      description: 'Start tracking a new project',
+      icon: FolderOpen,
+      color: 'from-green-500 to-emerald-500',
+      link: '/admin/projects',
+      action: 'create'
+    },
+    {
+      title: 'Manage Members',
+      description: 'Add or update team members',
+      icon: Users,
+      color: 'from-purple-500 to-pink-500',
+      link: '/admin/members',
+      action: 'manage'
+    }
   ];
 
   return (
@@ -246,37 +283,46 @@ const AdminDashboard = () => {
         >
           <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-2xl blur opacity-30"></div>
           <div className="relative card-glow">
-            <div className="flex items-center space-x-3 mb-6">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-lg flex items-center justify-center border border-blue-500/30">
-                <Calendar size={16} className="text-blue-400" />
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-lg flex items-center justify-center border border-blue-500/30">
+                  <Calendar size={16} className="text-blue-400" />
+                </div>
+                <h2 className="text-lg font-semibold text-white code-font">Recent Events</h2>
               </div>
-              <h2 className="text-lg font-semibold text-white code-font">Recent Events</h2>
+              <Link 
+                to="/admin/events"
+                className="text-sm text-cyan-400 hover:text-cyan-300 code-font flex items-center space-x-1 transition-colors"
+              >
+                <span>View All</span>
+                <ArrowRight size={14} />
+              </Link>
             </div>
             <div className="space-y-3">
-              {analytics?.recentActivities?.events?.map((event, index) => (
-                <div key={event._id} className="flex items-center space-x-3 p-3 bg-gray-800/30 rounded-lg border border-gray-700/30 hover:border-blue-500/30 transition-colors">
-                  <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
-                  <div className="flex-1">
-                    <p className="font-medium text-white code-font text-sm">{event.title}</p>
-                    <p className="text-xs text-gray-400 code-font">
-                      {format(new Date(event.date), 'MMM dd, yyyy')} • <span className="text-blue-400">{event.status}</span>
-                    </p>
-                  </div>
-                </div>
-              )) || (
-                [...Array(3)].map((_, i) => (
-                  <div key={i} className="flex items-center space-x-3 p-3 bg-gray-800/30 rounded-lg border border-gray-700/30">
+              {analytics?.recentActivities?.events?.length > 0 ? (
+                analytics.recentActivities.events.map((event, index) => (
+                  <div key={event._id} className="flex items-center space-x-3 p-3 bg-gray-800/30 rounded-lg border border-gray-700/30 hover:border-blue-500/30 transition-colors">
                     <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
                     <div className="flex-1">
-                      <p className="font-medium text-white code-font text-sm">
-                        {['AI Workshop: Neural Networks', 'Blockchain Hackathon 2024', 'IoT Security Seminar'][i]}
-                      </p>
+                      <p className="font-medium text-white code-font text-sm">{event.title}</p>
                       <p className="text-xs text-gray-400 code-font">
-                        {format(new Date(Date.now() + i * 86400000), 'MMM dd, yyyy')} • <span className="text-blue-400">upcoming</span>
+                        {format(new Date(event.date), 'MMM dd, yyyy')} • <span className="text-blue-400">{event.status}</span>
                       </p>
                     </div>
                   </div>
                 ))
+              ) : (
+                <div className="text-center py-8">
+                  <Calendar size={48} className="text-gray-600 mx-auto mb-4" />
+                  <p className="text-gray-500 code-font mb-4">No events found</p>
+                  <Link 
+                    to="/admin/events"
+                    className="inline-flex items-center space-x-2 px-4 py-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition-colors code-font text-sm"
+                  >
+                    <Plus size={16} />
+                    <span>Create First Event</span>
+                  </Link>
+                </div>
               )}
             </div>
           </div>
@@ -291,37 +337,46 @@ const AdminDashboard = () => {
         >
           <div className="absolute -inset-1 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-2xl blur opacity-30"></div>
           <div className="relative card-glow">
-            <div className="flex items-center space-x-3 mb-6">
-              <div className="w-8 h-8 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-lg flex items-center justify-center border border-yellow-500/30">
-                <Trophy size={16} className="text-yellow-400" />
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-lg flex items-center justify-center border border-yellow-500/30">
+                  <Trophy size={16} className="text-yellow-400" />
+                </div>
+                <h2 className="text-lg font-semibold text-white code-font">Recent Achievements</h2>
               </div>
-              <h2 className="text-lg font-semibold text-white code-font">Recent Achievements</h2>
+              <Link 
+                to="/admin/achievements"
+                className="text-sm text-yellow-400 hover:text-yellow-300 code-font flex items-center space-x-1 transition-colors"
+              >
+                <span>View All</span>
+                <ArrowRight size={14} />
+              </Link>
             </div>
             <div className="space-y-3">
-              {analytics?.recentActivities?.achievements?.map((achievement, index) => (
-                <div key={achievement._id} className="flex items-center space-x-3 p-3 bg-gray-800/30 rounded-lg border border-gray-700/30 hover:border-yellow-500/30 transition-colors">
-                  <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
-                  <div className="flex-1">
-                    <p className="font-medium text-white code-font text-sm">{achievement.title}</p>
-                    <p className="text-xs text-gray-400 code-font">
-                      <span className="text-yellow-400">{achievement.category}</span> • {achievement.year}
-                    </p>
-                  </div>
-                </div>
-              )) || (
-                [...Array(3)].map((_, i) => (
-                  <div key={i} className="flex items-center space-x-3 p-3 bg-gray-800/30 rounded-lg border border-gray-700/30">
+              {analytics?.recentActivities?.achievements?.length > 0 ? (
+                analytics.recentActivities.achievements.map((achievement, index) => (
+                  <div key={achievement._id} className="flex items-center space-x-3 p-3 bg-gray-800/30 rounded-lg border border-gray-700/30 hover:border-yellow-500/30 transition-colors">
                     <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
                     <div className="flex-1">
-                      <p className="font-medium text-white code-font text-sm">
-                        {['Hackathon Winner 2024', 'Best Innovation Award', 'Research Publication'][i]}
-                      </p>
+                      <p className="font-medium text-white code-font text-sm">{achievement.title}</p>
                       <p className="text-xs text-gray-400 code-font">
-                        <span className="text-yellow-400">{['hackathon', 'recognition', 'research'][i]}</span> • 2024
+                        <span className="text-yellow-400">{achievement.category}</span> • {achievement.year}
                       </p>
                     </div>
                   </div>
                 ))
+              ) : (
+                <div className="text-center py-8">
+                  <Trophy size={48} className="text-gray-600 mx-auto mb-4" />
+                  <p className="text-gray-500 code-font mb-4">No achievements found</p>
+                  <Link 
+                    to="/admin/achievements"
+                    className="inline-flex items-center space-x-2 px-4 py-2 bg-yellow-500/20 text-yellow-400 rounded-lg hover:bg-yellow-500/30 transition-colors code-font text-sm"
+                  >
+                    <Plus size={16} />
+                    <span>Add First Achievement</span>
+                  </Link>
+                </div>
               )}
             </div>
           </div>
@@ -337,38 +392,49 @@ const AdminDashboard = () => {
       >
         <div className="absolute -inset-1 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-2xl blur opacity-30"></div>
         <div className="relative card-glow">
-          <div className="flex items-center space-x-3 mb-6">
-            <div className="w-8 h-8 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg flex items-center justify-center border border-purple-500/30">
-              <MessageSquare size={16} className="text-purple-400" />
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg flex items-center justify-center border border-purple-500/30">
+                <MessageSquare size={16} className="text-purple-400" />
+              </div>
+              <h2 className="text-lg font-semibold text-white code-font">Recent Contact Messages</h2>
             </div>
-            <h2 className="text-lg font-semibold text-white code-font">Recent Contact Messages</h2>
+            <Link 
+              to="/admin/contacts"
+              className="text-sm text-purple-400 hover:text-purple-300 code-font flex items-center space-x-1 transition-colors"
+            >
+              <span>View All</span>
+              <ArrowRight size={14} />
+            </Link>
           </div>
           <div className="space-y-3">
-            {analytics?.recentActivities?.contacts?.map((contact, index) => (
-              <div key={contact._id} className="flex items-center justify-between p-4 bg-gray-800/30 rounded-lg border border-gray-700/30 hover:border-purple-500/30 transition-colors">
-                <div className="flex-1">
-                  <div className="flex items-center space-x-3 mb-2">
-                    <p className="font-medium text-white code-font">{contact.name}</p>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium code-font ${
-                      contact.status === 'new' 
-                        ? 'bg-red-500/20 text-red-400 border border-red-500/30' 
-                        : contact.status === 'in-progress'
-                        ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
-                        : 'bg-green-500/20 text-green-400 border border-green-500/30'
-                    }`}>
-                      {contact.status}
-                    </span>
+            {analytics?.recentActivities?.contacts?.length > 0 ? (
+              analytics.recentActivities.contacts.map((contact, index) => (
+                <div key={contact._id} className="flex items-center justify-between p-4 bg-gray-800/30 rounded-lg border border-gray-700/30 hover:border-purple-500/30 transition-colors">
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-3 mb-2">
+                      <p className="font-medium text-white code-font">{contact.name}</p>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium code-font ${
+                        contact.status === 'new' 
+                          ? 'bg-red-500/20 text-red-400 border border-red-500/30' 
+                          : contact.status === 'in-progress'
+                          ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
+                          : 'bg-green-500/20 text-green-400 border border-green-500/30'
+                      }`}>
+                        {contact.status}
+                      </span>
+                    </div>
+                    <p className="text-sm text-gray-300 mb-1">{contact.subject}</p>
+                    <p className="text-xs text-gray-500 code-font">
+                      {format(new Date(contact.createdAt), 'MMM dd, yyyy HH:mm')}
+                    </p>
                   </div>
-                  <p className="text-sm text-gray-300 mb-1">{contact.subject}</p>
-                  <p className="text-xs text-gray-500 code-font">
-                    {format(new Date(contact.createdAt), 'MMM dd, yyyy HH:mm')}
-                  </p>
+                  <div className="text-sm text-purple-400 code-font">
+                    {contact.type}
+                  </div>
                 </div>
-                <div className="text-sm text-purple-400 code-font">
-                  {contact.type}
-                </div>
-              </div>
-            )) || (
+              ))
+            ) : (
               <div className="text-center py-8">
                 <MessageSquare size={48} className="text-gray-600 mx-auto mb-4" />
                 <p className="text-gray-500 code-font">No recent contacts</p>
@@ -387,37 +453,35 @@ const AdminDashboard = () => {
       >
         <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/20 via-blue-600/20 to-purple-600/20 rounded-2xl blur opacity-30"></div>
         <div className="relative card-glow">
-          <div className="flex items-center space-x-3 mb-6">
-            <div className="w-8 h-8 bg-gradient-to-r from-cyan-500/20 to-blue-600/20 rounded-lg flex items-center justify-center border border-cyan-500/30">
-              <Zap size={16} className="text-cyan-400" />
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-gradient-to-r from-cyan-500/20 to-blue-600/20 rounded-lg flex items-center justify-center border border-cyan-500/30">
+                <Zap size={16} className="text-cyan-400" />
+              </div>
+              <h2 className="text-lg font-semibold text-white code-font">Quick Actions</h2>
             </div>
-            <h2 className="text-lg font-semibold text-white code-font">Quick Actions</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <button className="group relative p-6 bg-gray-800/30 border border-gray-700/30 rounded-lg hover:border-blue-500/50 transition-all duration-300 text-left">
-              <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-lg blur opacity-0 group-hover:opacity-50 transition duration-300"></div>
-              <div className="relative">
-                <Calendar size={24} className="text-blue-400 mb-3" />
-                <p className="font-medium text-white code-font mb-1">Create Event</p>
-                <p className="text-sm text-gray-400 code-font">Add a new event or workshop</p>
-              </div>
-            </button>
-            <button className="group relative p-6 bg-gray-800/30 border border-gray-700/30 rounded-lg hover:border-yellow-500/50 transition-all duration-300 text-left">
-              <div className="absolute -inset-1 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-lg blur opacity-0 group-hover:opacity-50 transition duration-300"></div>
-              <div className="relative">
-                <Trophy size={24} className="text-yellow-400 mb-3" />
-                <p className="font-medium text-white code-font mb-1">Add Achievement</p>
-                <p className="text-sm text-gray-400 code-font">Record a new accomplishment</p>
-              </div>
-            </button>
-            <button className="group relative p-6 bg-gray-800/30 border border-gray-700/30 rounded-lg hover:border-green-500/50 transition-all duration-300 text-left">
-              <div className="absolute -inset-1 bg-gradient-to-r from-green-500/20 to-emerald-500/20 rounded-lg blur opacity-0 group-hover:opacity-50 transition duration-300"></div>
-              <div className="relative">
-                <FolderOpen size={24} className="text-green-400 mb-3" />
-                <p className="font-medium text-white code-font mb-1">New Project</p>
-                <p className="text-sm text-gray-400 code-font">Start tracking a new project</p>
-              </div>
-            </button>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {quickActions.map((action, index) => {
+              const Icon = action.icon;
+              return (
+                <Link
+                  key={action.title}
+                  to={action.link}
+                  className="group relative p-6 bg-gray-800/30 border border-gray-700/30 rounded-lg hover:border-cyan-500/50 transition-all duration-300 text-left block"
+                >
+                  <div className={`absolute -inset-1 bg-gradient-to-r ${action.color.replace('500', '500/20')} rounded-lg blur opacity-0 group-hover:opacity-50 transition duration-300`}></div>
+                  <div className="relative">
+                    <div className="flex items-center justify-between mb-3">
+                      <Icon size={24} className="text-cyan-400" />
+                      <ArrowRight size={16} className="text-gray-500 group-hover:text-cyan-400 transition-colors" />
+                    </div>
+                    <p className="font-medium text-white code-font mb-1">{action.title}</p>
+                    <p className="text-sm text-gray-400 code-font">{action.description}</p>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </motion.div>

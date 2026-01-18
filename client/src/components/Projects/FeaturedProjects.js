@@ -37,16 +37,20 @@ const FeaturedProjects = () => {
     }
 
     const handleNext = () => {
-        setCurrentIndex((prev) => (prev + 1) % featuredProjects.length);
+        if (featuredProjects.length > itemsPerPage) {
+            setCurrentIndex((prev) => (prev + 1) % featuredProjects.length);
+        }
     };
 
     const handlePrev = () => {
-        setCurrentIndex((prev) => (prev - 1 + featuredProjects.length) % featuredProjects.length);
+        if (featuredProjects.length > itemsPerPage) {
+            setCurrentIndex((prev) => (prev - 1 + featuredProjects.length) % featuredProjects.length);
+        }
     };
 
     const getVisibleProjects = () => {
-        // Always return carousel items, even if few
         if (featuredProjects.length === 0) return [];
+        if (featuredProjects.length <= itemsPerPage) return featuredProjects;
 
         const visible = [];
         for (let i = 0; i < itemsPerPage; i++) {
@@ -57,6 +61,14 @@ const FeaturedProjects = () => {
 
     const visibleProjects = getVisibleProjects();
 
+    // Determine grid layout based on number of items
+    const getGridLayout = () => {
+        const itemCount = Math.min(featuredProjects.length, itemsPerPage);
+        if (itemCount === 1) return 'flex justify-center';
+        if (itemCount === 2) return 'grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto';
+        return 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8';
+    };
+
     return (
         <section className="py-24 bg-gray-950 relative overflow-hidden">
             {/* Background Elements */}
@@ -64,47 +76,45 @@ const FeaturedProjects = () => {
             <div className="absolute bottom-0 left-0 w-1/3 h-full bg-gradient-to-r from-purple-900/10 to-transparent"></div>
 
             <div className="container-max relative z-10 px-6">
-                {/* Section Header */}
-                <div className="flex flex-col md:flex-row justify-between items-end mb-12">
-                    <motion.div
-                        initial={{ opacity: 0, x: -30 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.8 }}
-                        viewport={{ once: true }}
-                        className="text-left"
-                    >
-                        <div className="flex items-center mb-4">
-                            <Star size={24} className="text-yellow-500 mr-2" />
-                            <h2 className="text-4xl md:text-5xl font-bold text-white">
-                                Featured <span className="text-gradient from-cyan-400 to-blue-500">Projects</span>
-                            </h2>
-                        </div>
-                        <p className="text-xl text-gray-400 max-w-xl leading-relaxed">
-                            Explore the innovative solutions built by our talented community.
-                        </p>
-                    </motion.div>
-
-                    {/* Navigation Arrows */}
-                    {featuredProjects.length > 0 && (
-                        <div className="flex space-x-4 mt-6 md:mt-0">
+                {/* Section Header - Centered */}
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                    viewport={{ once: true }}
+                    className="text-center mb-16"
+                >
+                    <div className="flex items-center justify-center mb-4">
+                        <Star size={24} className="text-yellow-500 mr-2" />
+                        <h2 className="text-4xl md:text-5xl font-bold text-white">
+                            Featured <span className="text-gradient">Projects</span>
+                        </h2>
+                    </div>
+                    <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
+                        Explore the innovative solutions built by our talented community members
+                    </p>
+                    
+                    {/* Navigation Arrows - Centered Below */}
+                    {featuredProjects.length > itemsPerPage && (
+                        <div className="flex justify-center space-x-4 mt-8">
                             <button
                                 onClick={handlePrev}
                                 className="p-3 rounded-full bg-gray-800/50 border border-gray-700 text-white hover:bg-cyan-500 hover:border-cyan-500 transition-all duration-300 group"
                             >
-                                <ChevronLeft size={24} className="group-hover:-translate-x-1 transition-transform" />
+                                <ChevronLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
                             </button>
                             <button
                                 onClick={handleNext}
                                 className="p-3 rounded-full bg-gray-800/50 border border-gray-700 text-white hover:bg-cyan-500 hover:border-cyan-500 transition-all duration-300 group"
                             >
-                                <ChevronRight size={24} className="group-hover:translate-x-1 transition-transform" />
+                                <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
                             </button>
                         </div>
                     )}
-                </div>
+                </motion.div>
 
                 {/* Projects Grid / Carousel */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                <div className={`mb-12 ${getGridLayout()}`}>
                     <AnimatePresence mode='wait'>
                         {visibleProjects.map((project, index) => {
                             return (
@@ -114,15 +124,29 @@ const FeaturedProjects = () => {
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -30 }}
                                     transition={{ duration: 0.4, delay: index * 0.1 }}
-                                    className="group relative h-full flex"
+                                    className={`group relative h-full flex ${featuredProjects.length === 1 ? 'max-w-md mx-auto' : ''}`}
                                 >
                                     {/* Glow Effect - Copied from FeaturedEvents */}
                                     <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-300"></div>
 
-                                    <div className="relative w-full h-[450px] bg-gray-900/90 backdrop-blur-xl rounded-2xl border border-gray-700/50 overflow-hidden hover:border-cyan-500/50 transition-all duration-300 group/card">
+                                    <div className="relative w-full h-[500px] bg-black/90 backdrop-blur-xl rounded-2xl border border-gray-700 overflow-hidden hover:border-cyan-500/50 transition-all duration-500 group/card will-change-transform hover:scale-[1.02]">
+
+                                        {/* Terminal Header */}
+                                        <div className="absolute top-0 left-0 right-0 z-30 flex items-center justify-between px-4 py-3 bg-gray-900/95 border-b border-gray-700">
+                                            <div className="flex items-center space-x-3">
+                                                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                                                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                                            </div>
+                                            <div className="text-gray-400 text-xs code-font">project_{project._id?.slice(-6)}.js</div>
+                                            <div className="flex items-center space-x-1">
+                                                <Star size={12} className="text-yellow-400" />
+                                                <span className="text-xs text-yellow-400 code-font">FEATURED</span>
+                                            </div>
+                                        </div>
 
                                         {/* Project Image - Full Coverage */}
-                                        <div className="absolute inset-0 w-full h-full">
+                                        <div className="absolute inset-0 w-full h-full pt-12">
                                             {project.images?.[0]?.url ? (
                                                 <img
                                                     src={project.images[0].url}
@@ -138,13 +162,7 @@ const FeaturedProjects = () => {
                                             <div className="absolute inset-0 bg-black/20 group-hover/card:bg-black/60 transition-colors duration-500"></div>
                                         </div>
 
-                                        {/* Featured Badge */}
-                                        <div className="absolute top-4 right-4 z-20">
-                                            <div className="bg-yellow-500 text-black px-3 py-1 rounded-full text-xs font-bold flex items-center shadow-lg">
-                                                <Star size={12} className="mr-1" />
-                                                FEATURED
-                                            </div>
-                                        </div>
+                                        {/* Featured Badge - Removed since it's now in terminal header */}
 
                                         {/* Info Overlay - Reveal on Hover */}
                                         <div className="absolute inset-0 flex flex-col justify-end p-6 z-10 translate-y-6 opacity-0 group-hover/card:opacity-100 group-hover/card:translate-y-0 transition-all duration-500 bg-gradient-to-t from-gray-950 via-gray-900/80 to-transparent">
@@ -188,10 +206,13 @@ const FeaturedProjects = () => {
 
                                                 <Link
                                                     to={`/projects`}
-                                                    className="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-xl font-bold tracking-wide flex items-center justify-center group/btn hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300 mt-2"
+                                                    className="w-full py-3 bg-gradient-to-r from-cyan-500/20 to-blue-600/20 border border-cyan-500 rounded-lg text-cyan-400 hover:bg-cyan-500/30 transition-all duration-300 group/btn relative overflow-hidden"
                                                 >
-                                                    <span>View Project Details</span>
-                                                    <ArrowRight size={18} className="ml-2 group-hover/btn:translate-x-1 transition-transform" />
+                                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/10 to-transparent translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"></div>
+                                                    <div className="relative flex items-center justify-center space-x-2">
+                                                        <span className="font-medium">./view_project.sh</span>
+                                                        <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
+                                                    </div>
                                                 </Link>
                                             </div>
                                         </div>
@@ -202,12 +223,23 @@ const FeaturedProjects = () => {
                     </AnimatePresence>
                 </div>
 
-                <div className="text-center">
-                    <Link to="/projects" className="inline-flex items-center text-gray-400 hover:text-white transition-colors">
-                        <span className="border-b border-gray-700 hover:border-white pb-0.5">Explore All Projects</span>
-                        <ArrowRight size={16} className="ml-2" />
+                {/* View All Projects CTA - Centered */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.3 }}
+                    viewport={{ once: true }}
+                    className="text-center"
+                >
+                    <Link
+                        to="/projects"
+                        className="inline-flex items-center btn-outline group"
+                    >
+                        <FolderOpen size={18} className="mr-2" />
+                        <span>Explore All Projects</span>
+                        <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform duration-200" />
                     </Link>
-                </div>
+                </motion.div>
             </div>
         </section>
     );

@@ -15,6 +15,7 @@ import {
 import FeaturedEvents from '../components/Events/FeaturedEvents';
 import FeaturedAchievements from '../components/Achievements/FeaturedAchievements';
 import FeaturedProjects from '../components/Projects/FeaturedProjects';
+import OurTeam from '../components/Team/OurTeam';
 import GallerySection from '../components/Home/GallerySection';
 
 // ... (rest of imports)
@@ -562,6 +563,9 @@ const Home = () => {
 
       {/* Featured Achievements Section */}
       <FeaturedAchievements />
+
+      {/* Our Team Section */}
+      <OurTeam />
 
       {/* Gallery Section */}
       <GallerySection />

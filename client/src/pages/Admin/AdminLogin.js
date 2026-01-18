@@ -78,10 +78,11 @@ const AdminLogin = () => {
           <div className="text-center">
             <Link to="/" className="inline-flex items-center space-x-3 mb-8 group">
               <div className="relative">
-                <div className="w-16 h-16 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-500/25 group-hover:shadow-cyan-500/40 transition-all duration-300">
-                  <span className="text-white font-bold text-2xl code-font">M</span>
-                </div>
-                <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl blur opacity-25 group-hover:opacity-75 transition duration-300"></div>
+                <img 
+                 src="\logo192.png" 
+                  alt="MIBCS Logo" 
+                  className="w-16 h-16 object-contain group-hover:scale-105 transition-transform duration-300"
+                />
               </div>
               <div className="text-left">
                 <h1 className="text-3xl font-bold text-gradient">{CLUB_INFO.name}</h1>
@@ -123,7 +124,7 @@ const AdminLogin = () => {
                       })}
                       type="email"
                       className="input-field group-hover:border-cyan-500/50 transition-all duration-300"
-                      placeholder="admin@mibcs.com"
+                      placeholder="Enter your admin email"
                     />
                     <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-cyan-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
                   </div>
@@ -187,24 +188,15 @@ const AdminLogin = () => {
                 </button>
               </form>
 
-              {/* Demo Credentials */}
-              <div className="mt-8 p-4 bg-gray-800/50 rounded-lg border border-gray-700/50">
-                <h3 className="text-sm font-medium text-cyan-400 mb-3 code-font flex items-center">
-                  <Terminal size={14} className="mr-2" />
-                  Demo Credentials
+              {/* Security Notice */}
+              <div className="mt-8 p-4 bg-gradient-to-r from-red-900/20 to-orange-900/20 rounded-lg border border-red-700/30">
+                <h3 className="text-sm font-medium text-red-400 mb-2 code-font flex items-center">
+                  <Shield size={14} className="mr-2" />
+                  Security Notice
                 </h3>
-                <div className="space-y-2 text-sm text-gray-300 code-font">
-                  <div className="flex items-center space-x-2">
-                    <span className="text-gray-500">$</span>
-                    <span className="text-cyan-400">email:</span>
-                    <span>admin@mibcs.com</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-gray-500">$</span>
-                    <span className="text-cyan-400">password:</span>
-                    <span>admin123</span>
-                  </div>
-                </div>
+                <p className="text-xs text-gray-300 code-font">
+                  This is a secure admin portal. Only authorized personnel with valid credentials can access the system.
+                </p>
               </div>
             </div>
           </div>

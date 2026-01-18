@@ -87,15 +87,16 @@ const AdminLayout = () => {
           {/* Glow effect */}
           <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/20 via-blue-600/20 to-purple-600/20 rounded-2xl blur opacity-30"></div>
 
-          <div className="relative bg-gray-900/90 backdrop-blur-xl h-full">
-            {/* Logo */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-700/50">
+          <div className="relative bg-gray-900/90 backdrop-blur-xl h-full flex flex-col">
+            {/* Logo - Fixed at top */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-700/50 flex-shrink-0">
               <Link to="/" className="flex items-center space-x-3 group">
                 <div className="relative">
-                  <div className="w-10 h-10 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-500/25 group-hover:shadow-cyan-500/40 transition-all duration-300">
-                    <span className="text-white font-bold text-lg code-font">M</span>
-                  </div>
-                  <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl blur opacity-25 group-hover:opacity-75 transition duration-300"></div>
+                  <img 
+                    src="\logo192.png" 
+                    alt="MIBCS Logo" 
+                    className="w-10 h-10 object-contain group-hover:scale-105 transition-transform duration-300"
+                  />
                 </div>
                 <div>
                   <h1 className="text-lg font-bold text-gradient code-font">{CLUB_INFO.name}</h1>
@@ -113,75 +114,77 @@ const AdminLayout = () => {
               </button>
             </div>
 
-            {/* Navigation */}
-            <nav className="flex-1 p-6 space-y-2">
-              {navigation.map((item) => {
-                const Icon = item.icon;
-                const active = isActive(item.href);
-                return (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    onClick={() => setSidebarOpen(false)}
-                    className={`group relative flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300 ${active
-                      ? 'bg-gradient-to-r from-cyan-500/20 to-blue-600/20 text-cyan-400 border border-cyan-500/30 shadow-lg shadow-cyan-500/10'
-                      : 'text-gray-400 hover:text-white hover:bg-gray-800/50 border border-transparent hover:border-gray-700/50'
-                      }`}
-                  >
-                    {active && (
-                      <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/30 to-blue-600/30 rounded-lg blur opacity-50"></div>
-                    )}
-                    <div className="relative flex items-center space-x-3">
-                      <Icon size={18} className={active ? 'text-cyan-400' : item.color} />
-                      <span className="code-font">{item.name}</span>
+            {/* Navigation - Scrollable middle section */}
+            <div className="flex-1 min-h-0 relative">
+              <nav className="h-full overflow-y-auto p-6 space-y-2 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 pb-8">
+                {navigation.map((item) => {
+                  const Icon = item.icon;
+                  const active = isActive(item.href);
+                  return (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      onClick={() => setSidebarOpen(false)}
+                      className={`group relative flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300 ${active
+                        ? 'bg-gradient-to-r from-cyan-500/20 to-blue-600/20 text-cyan-400 border border-cyan-500/30 shadow-lg shadow-cyan-500/10'
+                        : 'text-gray-400 hover:text-white hover:bg-gray-800/50 border border-transparent hover:border-gray-700/50'
+                        }`}
+                    >
                       {active && (
-                        <div className="absolute -right-2 w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+                        <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/30 to-blue-600/30 rounded-lg blur opacity-50"></div>
                       )}
-                    </div>
-                  </Link>
-                );
-              })}
-            </nav>
+                      <div className="relative flex items-center space-x-3">
+                        <Icon size={18} className={active ? 'text-cyan-400' : item.color} />
+                        <span className="code-font">{item.name}</span>
+                        {active && (
+                          <div className="absolute -right-2 w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+                        )}
+                      </div>
+                    </Link>
+                  );
+                })}
+              </nav>
+            </div>
 
-            {/* User info and logout */}
-            <div className="p-6 border-t border-gray-700/50">
-              <div className="flex items-center space-x-3 mb-4 p-3 rounded-lg bg-gray-800/30 border border-gray-700/30">
+            {/* User info and actions - Fixed at bottom */}
+            <div className="p-4 border-t border-gray-700/50 flex-shrink-0 bg-gray-900/95">
+              <div className="flex items-center space-x-3 mb-3 p-2 rounded-lg bg-gray-800/30 border border-gray-700/30">
                 <div className="relative">
-                  <div className="w-10 h-10 bg-gradient-to-r from-cyan-500/20 to-blue-600/20 rounded-full flex items-center justify-center border border-cyan-500/30">
-                    <span className="text-cyan-400 font-bold text-sm code-font">
+                  <div className="w-8 h-8 bg-gradient-to-r from-cyan-500/20 to-blue-600/20 rounded-full flex items-center justify-center border border-cyan-500/30">
+                    <span className="text-cyan-400 font-bold text-xs code-font">
                       {user?.name?.charAt(0).toUpperCase()}
                     </span>
                   </div>
-                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-gray-900 animate-pulse"></div>
+                  <div className="absolute -top-1 -right-1 w-2 h-2 bg-green-500 rounded-full border border-gray-900 animate-pulse"></div>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-white truncate code-font">
+                  <p className="text-xs font-medium text-white truncate code-font">
                     {user?.name}
                   </p>
                   <p className="text-xs text-gray-400 truncate flex items-center">
-                    <Shield size={10} className="mr-1" />
-                    {user?.role || 'Administrator'}
+                    <Shield size={8} className="mr-1" />
+                    {user?.role || 'Admin'}
                   </p>
                 </div>
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-1">
                 <Link
                   to="/"
-                  className="group flex items-center space-x-3 px-4 py-2 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800/50 transition-all duration-200 border border-transparent hover:border-gray-700/50"
+                  className="group flex items-center space-x-3 px-3 py-2 rounded-lg text-xs font-medium text-gray-400 hover:text-white hover:bg-gray-800/50 transition-all duration-200 border border-transparent hover:border-gray-700/50"
                 >
-                  <Home size={16} className="text-green-400" />
+                  <Home size={14} className="text-green-400" />
                   <span className="code-font">View Site</span>
-                  <Zap size={12} className="ml-auto opacity-0 group-hover:opacity-100 text-green-400 transition-opacity" />
+                  <Zap size={10} className="ml-auto opacity-0 group-hover:opacity-100 text-green-400 transition-opacity" />
                 </Link>
 
                 <button
                   onClick={handleLogout}
-                  className="group w-full flex items-center space-x-3 px-4 py-2 rounded-lg text-sm font-medium text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-all duration-200 border border-transparent hover:border-red-500/30"
+                  className="group w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-xs font-medium text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-all duration-200 border border-transparent hover:border-red-500/30"
                 >
-                  <LogOut size={16} className="text-red-400" />
+                  <LogOut size={14} className="text-red-400" />
                   <span className="code-font">Logout</span>
-                  <div className="ml-auto w-2 h-2 bg-red-400 rounded-full opacity-0 group-hover:opacity-100 animate-pulse transition-opacity"></div>
+                  <div className="ml-auto w-1.5 h-1.5 bg-red-400 rounded-full opacity-0 group-hover:opacity-100 animate-pulse transition-opacity"></div>
                 </button>
               </div>
             </div>
@@ -223,6 +226,24 @@ const AdminLayout = () => {
                 <span className="text-sm text-gray-400 code-font">
                   Welcome, <span className="text-cyan-400">{user?.name}</span>
                 </span>
+              </div>
+
+              {/* Mobile quick actions */}
+              <div className="flex lg:hidden items-center space-x-2">
+                <Link
+                  to="/"
+                  className="p-2 rounded-lg text-gray-400 hover:text-green-400 hover:bg-gray-800/50 transition-all duration-200"
+                  title="View Site"
+                >
+                  <Home size={18} />
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="p-2 rounded-lg text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-all duration-200"
+                  title="Logout"
+                >
+                  <LogOut size={18} />
+                </button>
               </div>
 
               <div className="flex items-center space-x-1">

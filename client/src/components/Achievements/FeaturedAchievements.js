@@ -45,9 +45,23 @@ const AchievementCard = ({ achievement, index }) => {
             {/* Card Glow */}
             <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-300"></div>
 
-            <div className="relative h-full bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden hover:border-cyan-500/30 transition-colors duration-300 flex flex-col">
+            <div className="relative h-full bg-black/90 backdrop-blur-xl border border-gray-700 rounded-2xl overflow-hidden hover:border-cyan-500/50 transition-all duration-500 flex flex-col will-change-transform group-hover:scale-[1.02]">
+                
+                {/* Terminal Header */}
+                <div className="flex items-center justify-between px-4 py-3 bg-gray-900/95 border-b border-gray-700 flex-shrink-0">
+                    <div className="flex items-center space-x-3">
+                        <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                        <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                    </div>
+                    <div className="text-gray-400 text-xs code-font">achievement_{achievement._id?.slice(-6)}.md</div>
+                    <div className="flex items-center space-x-1">
+                        <Trophy size={12} className="text-yellow-400" />
+                        <span className="text-xs text-yellow-400 code-font">FEATURED</span>
+                    </div>
+                </div>
                 {/* Image Section */}
-                <div className="relative h-80 bg-gray-800 overflow-hidden">
+                <div className="relative h-64 bg-gray-800 overflow-hidden flex-shrink-0">
                     {achievement.images && achievement.images.length > 0 ? (
                         <motion.img
                             key={currentImageIndex}
@@ -69,8 +83,8 @@ const AchievementCard = ({ achievement, index }) => {
                     {/* Position Badge */}
                     {achievement.position && (
                         <div className="absolute top-4 right-4">
-                            <span className="flex items-center space-x-1 px-3 py-1 text-xs font-bold text-white bg-black/50 border border-white/10 rounded-full backdrop-blur-md">
-                                <Award size={12} className="text-cyan-400" />
+                            <span className="flex items-center space-x-1 px-3 py-1 text-xs font-bold text-black bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full shadow-lg">
+                                <Award size={12} />
                                 <span>{achievement.position}</span>
                             </span>
                         </div>
@@ -149,10 +163,13 @@ const AchievementCard = ({ achievement, index }) => {
                     <div className="pt-4 border-t border-gray-800 flex items-center justify-between">
                         <Link
                             to={`/achievements`}
-                            className="text-sm font-medium text-cyan-400 hover:text-cyan-300 flex items-center space-x-1 transition-colors"
+                            className="w-full py-2 bg-gradient-to-r from-cyan-500/20 to-blue-600/20 border border-cyan-500 rounded-lg text-cyan-400 hover:bg-cyan-500/30 transition-all duration-300 group/btn relative overflow-hidden text-center"
                         >
-                            <span>Read Story</span>
-                            <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/10 to-transparent translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"></div>
+                            <div className="relative flex items-center justify-center space-x-2">
+                                <span className="font-medium">./read_story.sh</span>
+                                <ArrowRight size={14} className="group-hover/btn:translate-x-1 transition-transform" />
+                            </div>
                         </Link>
                     </div>
                 </div>
@@ -162,13 +179,49 @@ const AchievementCard = ({ achievement, index }) => {
 };
 
 const FeaturedAchievements = () => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+    
     const { data, isLoading } = useQuery('featured-achievements', () =>
-        api.get('/achievements?featured=true&limit=3').then((res) => res.data)
+        api.get('/achievements?featured=true&limit=10').then((res) => res.data)
     );
 
     const achievements = data?.achievements || [];
+    const itemsPerPage = 3;
 
     if (!isLoading && achievements.length === 0) return null;
+
+    const handleNext = () => {
+        if (achievements.length > itemsPerPage) {
+            setCurrentIndex((prev) => (prev + 1) % achievements.length);
+        }
+    };
+
+    const handlePrev = () => {
+        if (achievements.length > itemsPerPage) {
+            setCurrentIndex((prev) => (prev - 1 + achievements.length) % achievements.length);
+        }
+    };
+
+    const getVisibleAchievements = () => {
+        if (achievements.length === 0) return [];
+        if (achievements.length <= itemsPerPage) return achievements;
+
+        const visible = [];
+        for (let i = 0; i < itemsPerPage; i++) {
+            visible.push(achievements[(currentIndex + i) % achievements.length]);
+        }
+        return visible;
+    };
+
+    const visibleAchievements = getVisibleAchievements();
+
+    // Determine grid layout based on number of items
+    const getGridLayout = () => {
+        const itemCount = Math.min(achievements.length, itemsPerPage);
+        if (itemCount === 1) return 'flex justify-center';
+        if (itemCount === 2) return 'grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto';
+        return 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8';
+    };
 
     return (
         <section className="py-24 bg-gray-950 relative overflow-hidden">
@@ -177,38 +230,42 @@ const FeaturedAchievements = () => {
             <div className="absolute bottom-0 left-0 w-1/3 h-full bg-gradient-to-r from-blue-500/5 to-transparent pointer-events-none" />
 
             <div className="container-max relative z-10">
-                <div className="flex flex-col md:flex-row justify-between items-end mb-12">
-                    <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.6 }}
-                        viewport={{ once: true }}
-                    >
-                        <div className="flex items-center space-x-2 mb-2">
-                            <Trophy size={18} className="text-cyan-500" />
-                            <span className="text-cyan-500 font-bold tracking-wider text-sm uppercase">Hall of Fame</span>
-                        </div>
+                {/* Section Header - Centered */}
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                    viewport={{ once: true }}
+                    className="text-center mb-16"
+                >
+                    <div className="flex items-center justify-center mb-4">
+                        <Trophy size={24} className="text-yellow-500 mr-2" />
                         <h2 className="text-4xl md:text-5xl font-bold text-white">
-                            Featured <span className="text-gradient from-cyan-400 to-blue-500">Achievements</span>
+                            Featured <span className="text-gradient">Achievements</span>
                         </h2>
-                    </motion.div>
-
-                    <motion.div
-                        initial={{ opacity: 0, x: 20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.6 }}
-                        viewport={{ once: true }}
-                        className="mt-4 md:mt-0"
-                    >
-                        <Link
-                            to="/achievements"
-                            className="group flex items-center space-x-2 text-gray-400 hover:text-white transition-colors"
-                        >
-                            <span>View All Achievements</span>
-                            <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                        </Link>
-                    </motion.div>
-                </div>
+                    </div>
+                    <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
+                        Celebrating the outstanding accomplishments of our community members
+                    </p>
+                    
+                    {/* Navigation Arrows - Show only if more than 3 items */}
+                    {achievements.length > itemsPerPage && (
+                        <div className="flex justify-center space-x-4 mt-8">
+                            <button
+                                onClick={handlePrev}
+                                className="p-3 rounded-full bg-gray-800/50 border border-gray-700 text-white hover:bg-cyan-500 hover:border-cyan-500 transition-all duration-300 group"
+                            >
+                                <ChevronLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+                            </button>
+                            <button
+                                onClick={handleNext}
+                                className="p-3 rounded-full bg-gray-800/50 border border-gray-700 text-white hover:bg-cyan-500 hover:border-cyan-500 transition-all duration-300 group"
+                            >
+                                <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                            </button>
+                        </div>
+                    )}
+                </motion.div>
 
                 {isLoading ? (
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -217,12 +274,41 @@ const FeaturedAchievements = () => {
                         ))}
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {achievements.map((achievement, index) => (
-                            <AchievementCard key={achievement._id} achievement={achievement} index={index} />
-                        ))}
+                    <div className={getGridLayout()}>
+                        <AnimatePresence mode='wait'>
+                            {visibleAchievements.map((achievement, index) => (
+                                <motion.div
+                                    key={`${achievement._id}-${currentIndex}`}
+                                    initial={{ opacity: 0, y: 30 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -30 }}
+                                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                                    className={`${achievements.length === 1 ? 'max-w-md mx-auto' : ''}`}
+                                >
+                                    <AchievementCard achievement={achievement} index={index} />
+                                </motion.div>
+                            ))}
+                        </AnimatePresence>
                     </div>
                 )}
+
+                {/* View All Achievements CTA - Centered */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.3 }}
+                    viewport={{ once: true }}
+                    className="text-center mt-12"
+                >
+                    <Link
+                        to="/achievements"
+                        className="inline-flex items-center btn-outline group"
+                    >
+                        <Trophy size={18} className="mr-2" />
+                        <span>View All Achievements</span>
+                        <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform duration-200" />
+                    </Link>
+                </motion.div>
             </div>
         </section>
     );

@@ -187,9 +187,9 @@ const Members = () => {
                           whileInView={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.6, delay: index * 0.1 }}
                           viewport={{ once: true }}
-                          className="card-glow text-center group hover:scale-105 transition-all duration-300"
+                          className="card-glow text-center group team-member-card"
                         >
-                          <div className="relative w-32 h-32 mx-auto mb-6">
+                          <div className="relative w-32 h-32 mx-auto mb-6 flex-shrink-0">
                             <div className="w-full h-full rounded-full overflow-hidden bg-gray-800 border-2 border-gray-700 group-hover:border-cyan-500 transition-colors duration-300">
                               {member.image?.url ? (
                                 <img
@@ -208,64 +208,77 @@ const Members = () => {
                             </div>
                           </div>
 
-                          <h3 className="text-xl font-semibold text-white group-hover:text-cyan-400 transition-colors duration-300 mb-2">
-                            {member.name}
-                          </h3>
-                          <p className="text-cyan-400 font-medium mb-4">{member.role}</p>
-                          
-                          {member.bio && (
-                            <p className="text-gray-400 text-sm mb-6 leading-relaxed line-clamp-3">
-                              {member.bio}
-                            </p>
-                          )}
-
-                          {member.domains && member.domains.length > 0 && (
-                            <div className="flex flex-wrap justify-center gap-2 mb-6">
-                              {member.domains.map((domain) => (
-                                <span
-                                  key={domain}
-                                  className="px-3 py-1 bg-gray-800 text-gray-300 text-xs rounded-full border border-gray-700"
-                                >
-                                  {domain}
-                                </span>
-                              ))}
+                          <div className="flex-grow-content">
+                            <div className="member-name-container">
+                              <h3 className="text-xl font-semibold text-white group-hover:text-cyan-400 transition-colors duration-300">
+                                {member.name}
+                              </h3>
                             </div>
-                          )}
+                            <p className="text-cyan-400 font-medium mb-4 flex-shrink-0">{member.role}</p>
+                            
+                            {member.bio && (
+                              <div className="bio-container mb-4">
+                                <p className="text-gray-400 text-sm leading-relaxed line-clamp-4">
+                                  {member.bio}
+                                </p>
+                              </div>
+                            )}
 
-                          {member.social && (
-                            <div className="flex justify-center space-x-4 pt-4 border-t border-gray-800">
-                              {member.social.github && (
-                                <a
-                                  href={member.social.github}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-gray-400 hover:text-cyan-400 transition-colors duration-300"
-                                >
-                                  <Github size={20} />
-                                </a>
-                              )}
-                              {member.social.linkedin && (
-                                <a
-                                  href={member.social.linkedin}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-gray-400 hover:text-cyan-400 transition-colors duration-300"
-                                >
-                                  <Linkedin size={20} />
-                                </a>
-                              )}
-                              {member.social.portfolio && (
-                                <a
-                                  href={member.social.portfolio}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-gray-400 hover:text-cyan-400 transition-colors duration-300"
-                                >
-                                  <Globe size={20} />
-                                </a>
+                            <div className="domain-tags-container mb-6">
+                              {member.domains && member.domains.length > 0 && (
+                                <>
+                                  {member.domains.slice(0, 3).map((domain) => (
+                                    <span
+                                      key={domain}
+                                      className="px-3 py-1 bg-gray-800 text-gray-300 text-xs rounded-full border border-gray-700 whitespace-nowrap"
+                                    >
+                                      {domain}
+                                    </span>
+                                  ))}
+                                  {member.domains.length > 3 && (
+                                    <span className="px-3 py-1 domain-overflow-indicator text-gray-400 text-xs rounded-full border border-gray-600">
+                                      +{member.domains.length - 3}
+                                    </span>
+                                  )}
+                                </>
                               )}
                             </div>
-                          )}
+
+                            {member.social && (
+                              <div className="flex justify-center space-x-2 pt-4 border-t border-gray-800 mt-auto flex-shrink-0">
+                                {member.social.github && (
+                                  <a
+                                    href={member.social.github}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-gray-400 hover:text-cyan-400 transition-colors duration-300 social-link-hover"
+                                  >
+                                    <Github size={20} />
+                                  </a>
+                                )}
+                                {member.social.linkedin && (
+                                  <a
+                                    href={member.social.linkedin}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-gray-400 hover:text-cyan-400 transition-colors duration-300 social-link-hover"
+                                  >
+                                    <Linkedin size={20} />
+                                  </a>
+                                )}
+                                {member.social.portfolio && (
+                                  <a
+                                    href={member.social.portfolio}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-gray-400 hover:text-cyan-400 transition-colors duration-300 social-link-hover"
+                                  >
+                                    <Globe size={20} />
+                                  </a>
+                                )}
+                              </div>
+                            )}
+                          </div>
                         </motion.div>
                       ))}
                     </div>

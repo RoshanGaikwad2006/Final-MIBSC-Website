@@ -24,7 +24,14 @@ const Header = () => {
       <div className="container-max">
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
-          <Link to="/" className="group">
+          <Link to="/" className="group flex items-center space-x-3">
+            <div className="relative">
+              <img 
+                src="\logo192.png"  
+                alt="MIBCS Logo" 
+                className="w-10 h-10 object-contain group-hover:scale-105 transition-transform duration-300"
+              />
+            </div>
             <div className="relative">
               <div className="text-2xl font-bold text-gradient code-font tracking-wider group-hover:scale-105 transition-transform duration-300">
                 MIBCS

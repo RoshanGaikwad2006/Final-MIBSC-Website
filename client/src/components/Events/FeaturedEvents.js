@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Calendar, Clock, MapPin, Users, ExternalLink, Star, ArrowRight, Terminal, Play } from 'lucide-react';
+import { Calendar, Clock, MapPin, Users, ExternalLink, Star, ArrowRight, Terminal, Play, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import { api } from '../../utils/api';
@@ -54,16 +54,20 @@ const FeaturedEvents = () => {
   }
 
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % featuredEvents.length);
+    if (featuredEvents.length > itemsPerPage) {
+      setCurrentIndex((prev) => (prev + 1) % featuredEvents.length);
+    }
   };
 
   const handlePrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + featuredEvents.length) % featuredEvents.length);
+    if (featuredEvents.length > itemsPerPage) {
+      setCurrentIndex((prev) => (prev - 1 + featuredEvents.length) % featuredEvents.length);
+    }
   };
 
   // Calculate visible items for carousel effect
-  // This is a simple sliding window or circular buffer logic
   const getVisibleEvents = () => {
+    if (featuredEvents.length === 0) return [];
     if (featuredEvents.length <= itemsPerPage) return featuredEvents;
 
     const visible = [];
@@ -74,6 +78,14 @@ const FeaturedEvents = () => {
   };
 
   const visibleEvents = getVisibleEvents();
+
+  // Determine grid layout based on number of items
+  const getGridLayout = () => {
+    const itemCount = Math.min(featuredEvents.length, itemsPerPage);
+    if (itemCount === 1) return 'flex justify-center';
+    if (itemCount === 2) return 'grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto';
+    return 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8';
+  };
 
   return (
     <section className="py-20 bg-gray-900/30 relative overflow-hidden">
@@ -114,7 +126,7 @@ const FeaturedEvents = () => {
 
       <div className="container-max relative z-10">
         {/* Section Header */}
-<motion.div
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -131,10 +143,28 @@ const FeaturedEvents = () => {
             Don't miss these exciting upcoming events designed to enhance your technical skills 
             and connect you with fellow innovators.
           </p>
+          
+          {/* Navigation Arrows - Show only if more than 3 items */}
+          {featuredEvents.length > itemsPerPage && (
+            <div className="flex justify-center space-x-4 mt-8">
+              <button
+                onClick={handlePrev}
+                className="p-3 rounded-full bg-gray-800/50 border border-gray-700 text-white hover:bg-cyan-500 hover:border-cyan-500 transition-all duration-300 group"
+              >
+                <ChevronLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+              </button>
+              <button
+                onClick={handleNext}
+                className="p-3 rounded-full bg-gray-800/50 border border-gray-700 text-white hover:bg-cyan-500 hover:border-cyan-500 transition-all duration-300 group"
+              >
+                <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
+          )}
         </motion.div>
 
-        {/* Terminal-Style Events Grid with Fixed Heights */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        {/* Terminal-Style Events Grid with Dynamic Layout */}
+        <div className={`mb-12 ${getGridLayout()}`}>
           <AnimatePresence mode='wait'>
             {visibleEvents.map((event, index) => {
               const eventType = EVENT_TYPES.find(type => type.id === event.type);
@@ -143,12 +173,12 @@ const FeaturedEvents = () => {
 
               return (
               <motion.div
-                key={event._id}
+                key={`${event._id}-${currentIndex}`}
                 initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -30 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="group relative h-full"
+                className={`group relative h-full ${featuredEvents.length === 1 ? 'max-w-md mx-auto' : ''}`}
               >
                 {/* Terminal Window Glow */}
                 <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/30 via-blue-600/30 to-purple-600/30 rounded-2xl blur opacity-50 group-hover:opacity-100 transition duration-500"></div>

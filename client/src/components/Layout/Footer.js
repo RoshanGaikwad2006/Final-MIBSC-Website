@@ -29,10 +29,11 @@ const Footer = () => {
           <div className="lg:col-span-2">
             <div className="flex items-center space-x-3 mb-6">
               <div className="relative">
-                <div className="w-12 h-12 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-500/25">
-                  <Terminal size={20} className="text-white" />
-                </div>
-                <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl blur opacity-25"></div>
+                <img 
+                  src="\logo192.png"  
+                  alt="MIBCS Logo" 
+                  className="w-12 h-12 object-contain"
+                />
               </div>
               <div>
                 <h3 className="text-xl font-bold text-gradient">{CLUB_INFO.name}</h3>

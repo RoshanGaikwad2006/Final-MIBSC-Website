@@ -17,7 +17,7 @@ const memberSchema = new mongoose.Schema({
   },
   team: {
     type: String,
-    enum: ['Core', 'Technical', 'Design', 'Management', 'Alumni'],
+    enum: ['Super Senior', 'Senior Committee', 'Core Committee'],
     required: true
   },
   domains: [{
