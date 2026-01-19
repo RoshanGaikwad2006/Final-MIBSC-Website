@@ -19,7 +19,19 @@ const galleryRoutes = require('./routes/gallery');
 const app = express();
 
 // Security middleware
-app.use(helmet());
+// Security middleware
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      connectSrc: ["'self'", "https://mibcs.onrender.com", "http://localhost:5000"],
+      imgSrc: ["'self'", "data:", "https://res.cloudinary.com"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"], // unsafe-eval needed for some dev tools, unsafe-inline for inline scripts
+      styleSrc: ["'self'", "'unsafe-inline'"],
+    },
+  },
+  crossOriginEmbedderPolicy: false, // Disable COEP to allow loading cross-origin resources like images
+}));
 
 // CORS configuration
 const allowedOrigins = [
