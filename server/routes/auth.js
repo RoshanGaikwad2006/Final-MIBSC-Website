@@ -27,16 +27,20 @@ router.post('/login', [
     }
 
     const { email, password } = req.body;
+    console.log('Login attempt for:', email);
 
     // Find user in database
     const user = await User.findOne({ email });
     if (!user) {
+      console.log('User not found:', email);
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
     // Check password
+    console.log('User found, checking password...');
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
+      console.log('Password mismatch for:', email);
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
@@ -46,6 +50,7 @@ router.post('/login', [
 
     // Generate token
     const token = generateToken(user._id);
+    console.log('Login successful, token generated');
 
     res.json({
       token,
@@ -57,8 +62,8 @@ router.post('/login', [
       }
     });
   } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ message: 'Server error' });
+    console.error('Login error details:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 
