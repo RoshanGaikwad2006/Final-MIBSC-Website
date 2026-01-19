@@ -234,16 +234,9 @@ router.put('/:id', [adminAuth, upload.single('image')], async (req, res) => {
       if (req.body[field] !== undefined) {
         // Handle empty strings for optional fields that might have validators
         if ((field === 'registrationLink' || field === 'endDate' || field === 'maxParticipants') && req.body[field] === '') {
-          event[field] = undefined; // or remove key, but assignment to undefined unsets it in mongoose often or we can set null if schema allows
-          // For registrationLink (String), setting to undefined or null usually bypasses validator if not required. 
-          // In Mongoose, if type is String, null might be cast to "null" string depending on config, but usually undefined removes the path.
-          // Let's safe bet: set to null if the schema type allows null (Date does), String: if not required, undefined works best to "unset" or "skip validation".
-          // However, event[field] = undefined might only work if we used update querires. modifying document property to undefined might not save it as removed.
-          // Actually, setting it to empty string trigers validator.
-          // Let's use null for date/number and empty string for reg link IF we relax validation. 
-          // Better approach: if empty and field is registrationLink, set event.registrationLink = undefined;
           if (field === 'registrationLink') event[field] = undefined;
-          else if (field === 'endDate' || field === 'maxParticipants') event[field] = null;
+          else if (field === 'endDate') event[field] = null;
+          else if (field === 'maxParticipants') event[field] = undefined;
         } else {
           event[field] = req.body[field];
         }

@@ -213,7 +213,19 @@ router.put('/:id', [adminAuth, upload.single('image')], async (req, res) => {
     // Update simple fields
     const fields = ['title', 'description', 'shortDescription', 'status', 'startDate', 'endDate', 'difficulty'];
     fields.forEach(field => {
-      if (req.body[field] !== undefined) project[field] = req.body[field];
+      if (req.body[field] !== undefined) {
+        if ((field === 'endDate' || field === 'startDate') && req.body[field] === '') {
+          project[field] = null;
+        } else if (field === 'difficulty' && req.body[field] === '') {
+          project[field] = undefined; 
+        } else if (field === 'status' && req.body[field] === '') {
+          // Keep existing status if empty or handle as undefined
+          // project[field] = undefined; 
+          // Use default if undefined? No, update shouldn't revert to default usually. 
+        } else {
+           project[field] = req.body[field];
+        }
+      }
     });
 
     if (req.body.featured !== undefined) project.featured = req.body.featured === 'true' || req.body.featured === true;

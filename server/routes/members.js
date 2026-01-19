@@ -54,6 +54,15 @@ router.post('/', adminAuth, upload.single('image'), async (req, res) => {
   try {
     const memberData = { ...req.body };
     
+    // Sanitize empty strings
+    if (memberData.graduationYear === '') delete memberData.graduationYear; // or undefined
+    if (memberData.joinDate === '') delete memberData.joinDate;
+    if (memberData.position === '') delete memberData.position;
+    if (memberData.email === '') delete memberData.email; // Required but better validation error than cast error? strings handle empty though.
+    // Enums: team, role
+    if (memberData.team === '') delete memberData.team;
+    if (memberData.role === '') delete memberData.role;
+    
     // Parse JSON fields that come as strings from FormData
     if (typeof memberData.social === 'string') {
       memberData.social = JSON.parse(memberData.social);
@@ -88,6 +97,13 @@ router.post('/', adminAuth, upload.single('image'), async (req, res) => {
 router.put('/:id', adminAuth, upload.single('image'), async (req, res) => {
   try {
     const memberData = { ...req.body };
+
+    // Sanitize empty strings
+    if (memberData.graduationYear === '') memberData.graduationYear = undefined;
+    if (memberData.joinDate === '') memberData.joinDate = undefined;
+    if (memberData.position === '') memberData.position = undefined;
+    if (memberData.team === '') memberData.team = undefined;
+    if (memberData.role === '') memberData.role = undefined;
     
     // Parse JSON fields that come as strings from FormData
     if (typeof memberData.social === 'string') {
