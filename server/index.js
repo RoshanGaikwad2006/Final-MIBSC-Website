@@ -24,13 +24,14 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      connectSrc: ["'self'", "https://mibcs.onrender.com", "http://localhost:5000"],
-      imgSrc: ["'self'", "data:", "https://res.cloudinary.com"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"], // unsafe-eval needed for some dev tools, unsafe-inline for inline scripts
-      styleSrc: ["'self'", "'unsafe-inline'"],
+      connectSrc: ["'self'", "https://mibcs.onrender.com", "http://localhost:5000", "https://*.herokuapp.com"],
+      imgSrc: ["'self'", "data:", "blob:", "https://res.cloudinary.com"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      fontSrc: ["'self'", "data:", "https://fonts.gstatic.com"],
     },
   },
-  crossOriginEmbedderPolicy: false, // Disable COEP to allow loading cross-origin resources like images
+  crossOriginEmbedderPolicy: false,
 }));
 
 // CORS configuration

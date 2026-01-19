@@ -172,7 +172,7 @@ router.post('/', [
       category: req.body.category,
       year: req.body.year,
       date: req.body.date,
-      position: req.body.position,
+      position: req.body.position || undefined,
       event: event,
       teamMembers,
       domains,
