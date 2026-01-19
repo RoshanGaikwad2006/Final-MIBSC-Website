@@ -31,7 +31,18 @@ const upload = multer({
 router.get('/', async (req, res) => {
     try {
         const images = await Gallery.find().sort({ createdAt: -1 });
-        res.json(images);
+        
+        // Filter out invalid images and upgrade HTTP to HTTPS
+        const validImages = images
+            .filter(img => img.image && img.image.url)
+            .map(img => {
+                if (img.image.url.startsWith('http:')) {
+                    img.image.url = img.image.url.replace('http:', 'https:');
+                }
+                return img;
+            });
+            
+        res.json(validImages);
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Server Error' });
