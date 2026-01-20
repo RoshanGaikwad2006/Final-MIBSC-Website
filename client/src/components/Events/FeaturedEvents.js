@@ -13,7 +13,7 @@ const FeaturedEvents = () => {
 
   const { data, isLoading } = useQuery(
     'featured-events',
-    () => api.get('/events?featured=true&status=upcoming&limit=10').then(res => res.data),
+    () => api.get('/events?featured=true&limit=10').then(res => res.data),
     {
       staleTime: 5 * 60 * 1000,
     }
@@ -339,6 +339,21 @@ const FeaturedEvents = () => {
                             </motion.div>
                           </div>
                         </motion.button>
+                      ) : (isUpcoming ? (
+                         <div className="w-full bg-gray-800/50 border border-gray-600 rounded-lg p-3 text-yellow-400 border-yellow-500/30 text-center">
+                            <div className="flex items-center justify-center space-x-2">
+                              <Clock size={14} />
+                              <span>registration_opening_soon</span>
+                            </div>
+                         </div>
+                      ) : (event.status === 'ongoing') ? (
+                          <div className="w-full bg-gray-800/50 border border-green-600 rounded-lg p-3 text-green-400 border-green-500/30 text-center">
+                            <div className="flex items-center justify-center space-x-2">
+                              {/* <Zap size={14} /> -- Zap is not imported in this file apparently, or maybe it is? Checking imports... Imports: Calendar, Clock, MapPin, Users, ExternalLink, Star, ArrowRight, Terminal, Play, ChevronLeft, ChevronRight. Zap is NOT imported. Using Play or Star instead or just text? Or importing Zap?  Let's stick to simple text or existing icon. Terminal icon is good. */}
+                              <Play size={14} />
+                              <span>happening_now</span>
+                            </div>
+                          </div>
                       ) : (
                         <Link
                           to={`/events`}
@@ -349,7 +364,7 @@ const FeaturedEvents = () => {
                             <span>cat event_details.md</span>
                           </div>
                         </Link>
-                      )}
+                      ))}
                     </div>
                   </div>
                 </div>

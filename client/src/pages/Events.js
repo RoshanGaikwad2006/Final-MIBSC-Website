@@ -38,6 +38,7 @@ const Events = () => {
   });
 
   const tabs = [
+    { id: 'ongoing', name: 'Ongoing', icon: Play, count: filteredEvents.filter(e => e.status === 'ongoing').length },
     { id: 'upcoming', name: 'Upcoming', icon: Calendar, count: filteredEvents.filter(e => e.status === 'upcoming').length },
     { id: 'completed', name: 'Past Events', icon: Clock, count: filteredEvents.filter(e => e.status === 'completed').length }
   ];
@@ -421,25 +422,55 @@ const Events = () => {
 
                       {/* Terminal Command Button - Fixed at Bottom */}
                       <div className="mt-auto">
-                        {event.status === 'upcoming' && event.registrationLink ? (
-                          <motion.button
-                            onClick={() => handleRegisterClick(event)}
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            className="w-full bg-gradient-to-r from-cyan-500/20 to-blue-600/20 border border-cyan-500 rounded-lg p-3 text-cyan-400 hover:bg-cyan-500/30 transition-all duration-300 group/btn relative overflow-hidden"
-                          >
-                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/10 to-transparent translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"></div>
-                            <div className="relative flex items-center justify-center space-x-2">
-                              <ExternalLink size={14} />
-                              <span className="font-medium">./register_now.sh</span>
-                              <motion.div
-                                animate={{ x: [0, 3, 0] }}
-                                transition={{ duration: 1.5, repeat: Infinity }}
-                              >
-                                <Play size={14} />
-                              </motion.div>
-                            </div>
-                          </motion.button>
+                        {event.status === 'upcoming' ? (
+                          event.registrationLink ? (
+                            <motion.button
+                              onClick={() => handleRegisterClick(event)}
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                              className="w-full bg-gradient-to-r from-cyan-500/20 to-blue-600/20 border border-cyan-500 rounded-lg p-3 text-cyan-400 hover:bg-cyan-500/30 transition-all duration-300 group/btn relative overflow-hidden"
+                            >
+                              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/10 to-transparent translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"></div>
+                              <div className="relative flex items-center justify-center space-x-2">
+                                <ExternalLink size={14} />
+                                <span className="font-medium">./register_now.sh</span>
+                                <motion.div
+                                  animate={{ x: [0, 3, 0] }}
+                                  transition={{ duration: 1.5, repeat: Infinity }}
+                                >
+                                  <Play size={14} />
+                                </motion.div>
+                              </div>
+                            </motion.button>
+                          ) : (
+                            <button className="w-full bg-gray-800/50 border border-gray-600 rounded-lg p-3 text-yellow-400 hover:text-yellow-300 hover:border-yellow-500/50 transition-all duration-300 cursor-not-allowed">
+                              <div className="flex items-center justify-center space-x-2">
+                                <Clock size={14} />
+                                <span>registration_opening_soon</span>
+                              </div>
+                            </button>
+                          )
+                        ) : event.status === 'ongoing' ? (
+                           event.registrationLink ? (
+                            <motion.button
+                              onClick={() => handleRegisterClick(event)}
+                              whileHover={{ scale: 1.02 }}
+                              whileTap={{ scale: 0.98 }}
+                              className="w-full bg-gradient-to-r from-green-500/20 to-emerald-600/20 border border-green-500 rounded-lg p-3 text-green-400 hover:bg-green-500/30 transition-all duration-300 group/btn relative overflow-hidden"
+                            >
+                              <div className="relative flex items-center justify-center space-x-2">
+                                <Zap size={14} />
+                                <span className="font-medium">./join_now.sh</span>
+                              </div>
+                            </motion.button>
+                           ) : (
+                            <button className="w-full bg-gray-800/50 border border-green-600 rounded-lg p-3 text-green-400 hover:text-green-300 hover:border-green-500/50 transition-all duration-300 cursor-not-allowed">
+                              <div className="flex items-center justify-center space-x-2">
+                                <Zap size={14} />
+                                <span>happening_now</span>
+                              </div>
+                            </button>
+                           )
                         ) : event.status === 'completed' ? (
                           <button className="w-full bg-gray-800/50 border border-gray-600 rounded-lg p-3 text-gray-400 hover:text-white hover:border-gray-500 transition-all duration-300">
                             <div className="flex items-center justify-center space-x-2">

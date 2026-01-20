@@ -13,8 +13,7 @@ const Header = () => {
     { name: 'Projects', href: '/projects' },
     { name: 'Achievements', href: '/achievements' },
     { name: 'Gallery', href: '/gallery' },
-    { name: 'Events', href: '/events' },
-    { name: 'Contact', href: '/contact' }
+    { name: 'Events', href: '/events' }
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -60,9 +59,9 @@ const Header = () => {
 
           {/* CTA Button */}
           <div className="hidden md:flex items-center">
-            <Link to="/admin/login" className="btn-outline text-sm">
-              <Terminal size={16} className="mr-2" />
-              Admin
+            <Link to="/contact" className="btn-outline text-sm">
+              <span className="mr-2">Join Us</span>
+              <Terminal size={16} />
             </Link>
           </div>
 
@@ -94,12 +93,12 @@ const Header = () => {
               ))}
               <div className="pt-3 border-t border-gray-800/50">
                 <Link
-                  to="/admin/login"
+                  to="/contact"
                   onClick={() => setIsMenuOpen(false)}
                   className="btn-outline text-center text-sm w-full"
                 >
-                  <Terminal size={16} className="mr-2" />
-                  Admin
+                  <span className="mr-2">Join Us</span>
+                  <Terminal size={16} />
                 </Link>
               </div>
             </nav>
