@@ -30,7 +30,20 @@ import AdminGallery from './pages/Admin/AdminGallery';
 // Protected Route Component
 import ProtectedRoute from './components/Admin/ProtectedRoute';
 
+import SystemBootLoader from './components/UI/SystemBootLoader';
+
 function App() {
+  const [isBooting, setIsBooting] = React.useState(true);
+
+  // Function to dismiss loader
+  const handleSystemReady = React.useCallback(() => {
+    setIsBooting(false);
+  }, []);
+
+  if (isBooting) {
+    return <SystemBootLoader onReady={handleSystemReady} />;
+  }
+
   return (
     <AuthProvider>
       <div className="App">
